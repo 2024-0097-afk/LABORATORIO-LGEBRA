@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOREY · Laboratorio Virtual de Álgebra Lineal</title>
+<style>
+/* =====================================================
+   DOREY · Laboratorio Virtual de Álgebra Lineal
+   styles.css — para cambiar colores, edita las variables de :root
+   ===================================================== */
+:root{
+  --cielo:#87CEEB;        /* azul cielo */
+  --cielo-osc:#3FA9D6;
+  --turq:#30D5C8;         /* azul turquesa */
+  --turq-osc:#0E9AA7;
+  --gris:#6B7280;
+  --gris-cl:#EEF3F6;
+  --gris-md:#CBD5DC;
+  --negro:#111827;
+  --blanco:#FFFFFF;
+  --ok:#15803D;
+  --ok-bg:#E3F8EA;
+  --err:#B91C1C;
+  --err-bg:#FDE8E8;
+  --radio:16px;
+  --sombra:0 6px 22px rgba(17,24,39,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  color:var(--negro);
+  background:linear-gradient(180deg,#e6f6fc 0,#ffffff 360px);
+  line-height:1.55;
+  font-size:16px;
+}
+h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em}
+h2{font-size:1.7rem}
+h3{font-size:1.2rem;color:var(--turq-osc)}
+p{margin:.3em 0 .8em}
+button,input,select{font:inherit}
+a{color:var(--turq-osc)}
+
+/* ---------- Barra superior ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:var(--negro);color:var(--blanco);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:8px 16px;flex-wrap:wrap;
+  box-shadow:0 3px 14px rgba(0,0,0,.25);
+}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--cielo),var(--turq));color:var(--negro);
+  font-weight:800;font-size:1.3rem;
+}
+.brand strong{display:block;font-size:1.2rem;letter-spacing:.12em}
+.brand small{display:block;color:var(--cielo);font-size:.72rem;margin-top:-2px}
+.menu-btn{display:none;background:var(--turq);border:0;color:var(--negro);font-size:1.4rem;
+  width:44px;height:44px;border-radius:10px;cursor:pointer}
+#nav{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+#nav button{
+  background:transparent;border:0;color:#dbe7ee;padding:8px 11px;border-radius:999px;
+  cursor:pointer;font-size:.88rem;white-space:nowrap;
+}
+#nav button:hover{background:#26324a;color:#fff}
+#nav button.active{background:var(--turq);color:var(--negro);font-weight:700}
+#nav .reset-all{border:1px solid var(--gris);}
+
+/* ---------- Estructura general ---------- */
+main{max-width:1180px;margin:0 auto;padding:22px 16px 40px}
+.view{display:none;animation:aparece .35s ease}
+.view.active{display:block}
+@keyframes aparece{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{
+  background:var(--blanco);border-radius:var(--radio);padding:18px 20px;margin-bottom:18px;
+  box-shadow:var(--sombra);border:1px solid #e3edf2;
+}
+.card.accent{border-left:6px solid var(--turq)}
+.card.sky{background:linear-gradient(135deg,#eaf8fd,#e2faf7)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tag{display:inline-block;background:var(--cielo);color:var(--negro);padding:2px 10px;border-radius:999px;
+  font-size:.78rem;font-weight:700;margin-bottom:6px}
+.formula{
+  background:var(--gris-cl);border-left:5px solid var(--cielo-osc);padding:10px 14px;border-radius:10px;
+  font-family:"Cambria Math",Georgia,serif;font-size:1.1rem;margin:10px 0;overflow-x:auto;
+}
+.note{background:#fff8e1;border-left:5px solid #f5b301;padding:8px 12px;border-radius:8px;font-size:.92rem}
+ul.clean{padding-left:20px;margin:.3em 0}
+ul.clean li{margin:.25em 0}
+
+/* ---------- Portada ---------- */
+.hero{
+  text-align:center;padding:38px 18px;border-radius:24px;color:var(--negro);margin-bottom:20px;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(255,255,255,.7),transparent 40%),
+    linear-gradient(135deg,var(--cielo),var(--turq));
+  box-shadow:var(--sombra);
+}
+.hero h1{font-size:clamp(2.3rem,7vw,4rem);letter-spacing:.2em;margin:0}
+.hero .sub{font-size:1.2rem;font-weight:600;margin:.2em 0 .6em}
+.hero p{max-width:720px;margin:.5em auto 1em}
+.mod-card{
+  background:var(--blanco);border:1px solid #dbe9ef;border-radius:var(--radio);padding:16px;cursor:pointer;
+  text-align:left;transition:transform .15s, box-shadow .15s;display:block;width:100%;
+}
+.mod-card:hover{transform:translateY(-4px);box-shadow:var(--sombra)}
+.mod-card .emo{font-size:2rem;display:block}
+.mod-card strong{display:block;color:var(--turq-osc);margin:4px 0}
+.mod-card span.d{font-size:.9rem;color:var(--gris)}
+.vida-strip{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0}
+.vida-strip figure{
+  margin:0;flex:1 1 150px;background:var(--gris-cl);border-radius:14px;padding:12px;text-align:center;
+}
+.vida-strip .emo{font-size:2.4rem;display:block}
+.vida-strip figcaption{font-size:.85rem;color:#374151}
+
+/* ---------- Botones ---------- */
+.btn{
+  background:var(--turq-osc);color:#fff;border:0;padding:10px 16px;border-radius:12px;cursor:pointer;
+  font-weight:700;transition:filter .15s, transform .1s;margin:3px 3px 3px 0;
+}
+.btn:hover{filter:brightness(1.1)}
+.btn:active{transform:scale(.97)}
+.btn.sec{background:var(--cielo);color:var(--negro)}
+.btn.neu{background:var(--gris);}
+.btn.dark{background:var(--negro)}
+.btn.small{padding:6px 11px;font-size:.85rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---------- Simulaciones ---------- */
+.sim{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:18px;align-items:start}
+.controls{background:var(--gris-cl);border-radius:14px;padding:14px}
+.display{min-width:0}
+canvas{width:100%;display:block;background:#fff;border:1px solid var(--gris-md);border-radius:14px}
+.slider{margin:8px 0}
+.slider label{display:flex;justify-content:space-between;font-weight:600;font-size:.92rem}
+.slider output{color:var(--turq-osc);font-weight:800}
+input[type=range]{width:100%;accent-color:var(--turq-osc);height:28px}
+.resultado{
+  background:var(--negro);color:#e8fbf9;border-radius:14px;padding:12px 14px;margin-top:12px;
+  font-family:"Cambria Math",Georgia,serif;font-size:1.05rem;
+}
+.resultado b{color:var(--turq)}
+.resultado .big{font-size:1.25rem;color:var(--cielo)}
+table.t{border-collapse:collapse;width:100%;font-size:.92rem;margin:8px 0}
+table.t th,table.t td{border:1px solid var(--gris-md);padding:5px 8px;text-align:center}
+table.t th{background:var(--cielo);color:var(--negro)}
+table.t tr.hit td{background:#d8fbe6;font-weight:700}
+.scroll-x{overflow-x:auto}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-weight:700;font-size:.85rem}
+.badge.ok{background:var(--ok-bg);color:var(--ok)}
+.badge.warn{background:#fff3cd;color:#8a5a00}
+.badge.err{background:var(--err-bg);color:var(--err)}
+.fb{margin-top:8px;padding:9px 12px;border-radius:10px;font-size:.95rem;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-bg);color:var(--ok)}
+.fb.err{background:var(--err-bg);color:var(--err)}
+.fb.info{background:#e6f4fb;color:#0b5370}
+
+/* ---------- Matrices ---------- */
+.matrix-wrap{display:inline-block;vertical-align:middle;margin:6px 10px}
+.matrix-wrap .mt{font-weight:800;text-align:center;color:var(--turq-osc)}
+table.mx{border-collapse:separate;border-spacing:4px;
+  border-left:3px solid var(--negro);border-right:3px solid var(--negro);border-radius:10px;padding:2px 4px}
+table.mx td{padding:0;text-align:center}
+table.mx input{width:58px;text-align:center;padding:7px 2px;border:2px solid var(--gris-md);border-radius:8px}
+table.mx input:focus{outline:none;border-color:var(--turq)}
+table.mx td.cell{min-width:58px;padding:7px 4px;background:var(--gris-cl);border-radius:8px;font-weight:700}
+table.mx .hl input,table.mx td.cell.hl{background:#d4f7f3;border-color:var(--turq);box-shadow:0 0 0 2px var(--turq)}
+table.mx td.cell.now{background:var(--turq);color:var(--negro);transform:scale(1.08)}
+.op-sign{font-size:1.8rem;font-weight:800;vertical-align:middle;margin:0 4px}
+.matrices-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start}
+select,input[type=text],input[type=number]{
+  padding:8px 10px;border:2px solid var(--gris-md);border-radius:10px;background:#fff;max-width:100%;
+}
+select:focus,input[type=text]:focus,input[type=number]:focus{outline:none;border-color:var(--turq)}
+.chocolate{display:grid;gap:4px;max-width:340px;margin:10px 0}
+.choco-piece{
+  aspect-ratio:1;border-radius:6px;cursor:pointer;border:0;
+  background:linear-gradient(135deg,#7b4a2d,#4a2812);box-shadow:inset 2px 2px 3px rgba(255,255,255,.25),inset -2px -2px 3px rgba(0,0,0,.35);
+  transition:transform .15s, opacity .25s;
+}
+.choco-piece:hover{transform:scale(1.07)}
+.choco-piece.eaten{opacity:.12;transform:scale(.7)}
+.avion{display:inline-block;background:#f4f9fc;border:3px solid var(--gris-md);border-radius:60px 60px 18px 18px;padding:22px 18px 14px;margin:10px 0}
+.fila-avion{display:flex;align-items:center;gap:6px;margin:5px 0}
+.fila-avion .n{width:20px;font-size:.75rem;color:var(--gris)}
+.pasillo{width:18px}
+.asiento{
+  width:38px;height:38px;border-radius:9px 9px 5px 5px;border:2px solid var(--cielo-osc);background:var(--cielo);
+  cursor:pointer;font-size:.8rem;font-weight:800;color:var(--negro);transition:transform .12s;
+}
+.asiento:hover{transform:translateY(-2px)}
+.asiento.ocupado{background:var(--negro);border-color:var(--negro);color:var(--turq)}
+
+/* ---------- Ejercicios y evaluación ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tabs button{background:var(--gris-cl);border:2px solid transparent;border-radius:999px;padding:8px 16px;cursor:pointer;font-weight:700}
+.tabs button.active{background:var(--turq);border-color:var(--turq-osc)}
+.ej{margin-bottom:18px}
+.ej h3{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.nivel{font-size:.75rem;padding:2px 10px;border-radius:999px;color:#fff}
+.nivel.basico{background:var(--turq-osc)}
+.nivel.intermedio{background:var(--cielo-osc)}
+.nivel.avanzado{background:var(--negro)}
+.ej ol{margin:.3em 0;padding-left:22px}
+.campos{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}
+.campos label{display:flex;flex-direction:column;font-weight:700;font-size:.9rem;gap:3px}
+.campos input,.campos select{min-width:90px;width:110px}
+.campos input.bad{border-color:var(--err);background:var(--err-bg)}
+.campos input.good{border-color:var(--ok);background:var(--ok-bg)}
+.explica{background:#eef7fb;border-left:5px solid var(--cielo-osc);padding:10px 14px;border-radius:10px;margin-top:8px;display:none}
+.explica.show{display:block}
+.progress{height:12px;background:var(--gris-md);border-radius:99px;overflow:hidden;margin:6px 0}
+.progress>div{height:100%;background:linear-gradient(90deg,var(--cielo),var(--turq));width:0;transition:width .4s}
+.preg{border:1px solid var(--gris-md);border-radius:14px;padding:12px 14px;margin-bottom:12px;background:#fff}
+.preg .q{font-weight:700;margin-bottom:6px}
+.preg label.op{display:block;padding:6px 8px;border-radius:8px;cursor:pointer}
+.preg label.op:hover{background:var(--gris-cl)}
+.nota-final{font-size:3rem;font-weight:900;color:var(--turq-osc);line-height:1}
+.res-item{padding:8px 12px;border-radius:10px;margin:6px 0;font-size:.95rem}
+.res-item.ok{background:var(--ok-bg)}
+.res-item.err{background:var(--err-bg)}
+
+/* ---------- Pie ---------- */
+footer{background:var(--negro);color:#cbd5dc;text-align:center;padding:22px 14px;font-size:.9rem}
+footer b{color:var(--turq)}
+
+/* ---------- Adaptación a tabletas y celulares ---------- */
+@media (max-width:1000px){
+  .menu-btn{display:block}
+  #nav{display:none;width:100%;flex-direction:column;align-items:stretch;padding:8px 0}
+  #nav.open{display:flex}
+  #nav button{text-align:left;border-radius:10px;padding:11px 12px}
+}
+@media (max-width:820px){
+  .sim,.grid2{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr}
+  main{padding:14px 10px 30px}
+  .card{padding:14px}
+  table.mx input{width:50px}
+  table.mx td.cell{min-width:50px}
+  .asiento{width:34px;height:34px}
+}
+@media (max-width:420px){
+  h2{font-size:1.4rem}
+  table.mx input{width:44px;font-size:.9rem}
+  table.mx td.cell{min-width:44px;font-size:.9rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+
+<!-- ===================== BARRA SUPERIOR / MENÚ ===================== -->
+<header class="topbar">
+  <div class="brand" data-go="inicio" title="Ir al inicio">
+    <div class="logo">∑</div>
+    <div><strong class="lab-nombre">DOREY</strong><small id="lab-subtitulo">Laboratorio de Álgebra Lineal</small></div>
+  </div>
+  <button id="menuBtn" class="menu-btn" aria-label="Abrir menú">☰</button>
+  <nav id="nav" aria-label="Navegación principal">
+    <button data-go="inicio">🏠 Inicio</button>
+    <button data-go="m1">1 · Ecuaciones</button>
+    <button data-go="m2">2 · Sistemas</button>
+    <button data-go="m3">3 · Matrices</button>
+    <button data-go="m4">4 · Vectores</button>
+    <button data-go="vida">🌎 Vida real</button>
+    <button data-go="practicas">📝 Prácticas</button>
+    <button data-go="evaluacion">🎯 Evaluación</button>
+    <button data-go="experimento">🧪 Mi experimento</button>
+    <button data-go="ayuda">❓ Ayuda</button>
+    <button class="reset-all" id="btn-reset-all" title="Reinicia los controles de todas las simulaciones">↺ Reiniciar</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ===================== INICIO ===================== -->
+<section id="inicio" class="view active">
+  <div class="hero">
+    <h1 class="lab-nombre">DOREY</h1>
+    <div class="sub">Laboratorio Virtual de Álgebra Lineal</div>
+    <p>¡Bienvenido/a! Aquí no solo vas a leer fórmulas: vas a <b>mover controles, ver cómo cambian las gráficas y comprobar tus respuestas</b>.
+       El álgebra lineal está en los asientos de un avión, en una barra de chocolate, en el GPS de tu celular y en las cuentas de una tienda.</p>
+    <button class="btn dark" data-go="m1">▶ Comenzar con el Módulo 1</button>
+    <button class="btn sec" data-go="practicas">Ir a las prácticas</button>
+  </div>
+
+  <div class="card accent">
+    <h3>🎯 Objetivo del laboratorio</h3>
+    <p>Que los estudiantes <b>comprendan, practiquen e interioricen</b> los procedimientos básicos del álgebra lineal mediante simulaciones interactivas,
+       y reconozcan su utilidad en situaciones de la vida diaria, superando la idea de que son contenidos solo abstractos.</p>
+    <p><b>Al finalizar el laboratorio podrás:</b></p>
+    <ul class="clean">
+      <li>Resolver ecuaciones lineales con una incógnita e interpretarlas gráficamente.</li>
+      <li>Resolver sistemas de dos ecuaciones y decidir si tienen una, infinitas o ninguna solución.</li>
+      <li>Realizar operaciones con matrices (suma, resta, producto por un número, producto, transpuesta y determinante).</li>
+      <li>Operar con vectores: módulo, suma, resta, producto punto, determinante y ortogonalidad.</li>
+      <li>Aplicar estos conceptos para resolver problemas cotidianos.</li>
+    </ul>
+  </div>
+
+  <h2>Módulos del laboratorio</h2>
+  <div class="grid3">
+    <button class="mod-card" data-go="m1"><span class="emo">⚖️</span><strong>Módulo 1 · Ecuaciones lineales</strong><span class="d">Despeja la incógnita y mira la solución en una gráfica.</span></button>
+    <button class="mod-card" data-go="m2"><span class="emo">✖️</span><strong>Módulo 2 · Sistemas de ecuaciones</strong><span class="d">Dos rectas que se cruzan: ¿dónde? ¿o nunca?</span></button>
+    <button class="mod-card" data-go="m3"><span class="emo">🔢</span><strong>Módulo 3 · Operaciones con matrices</strong><span class="d">Tablas de números, asientos de avión y chocolate.</span></button>
+    <button class="mod-card" data-go="m4"><span class="emo">🧭</span><strong>Módulo 4 · Vectores</strong><span class="d">Módulo, determinante, ortogonalidad y operaciones.</span></button>
+    <button class="mod-card" data-go="vida"><span class="emo">🌎</span><strong>Aplicación a la vida</strong><span class="d">Tienda, ventas semanales y navegación.</span></button>
+    <button class="mod-card" data-go="practicas"><span class="emo">📝</span><strong>Prácticas de laboratorio</strong><span class="d">10 ejercicios en tres niveles.</span></button>
+    <button class="mod-card" data-go="evaluacion"><span class="emo">🎯</span><strong>Evaluación</strong><span class="d">Calificación sobre 100 con retroalimentación.</span></button>
+    <button class="mod-card" data-go="experimento"><span class="emo">🧪</span><strong>Crea tu propio experimento</strong><span class="d">Guarda, compara y exporta tus pruebas.</span></button>
+    <button class="mod-card" data-go="ayuda"><span class="emo">❓</span><strong>Ayuda e instrucciones</strong><span class="d">Cómo usar cada herramienta del laboratorio.</span></button>
+  </div>
+
+  <div class="card sky" style="margin-top:18px">
+    <h3>🌈 El álgebra lineal a tu alrededor</h3>
+    <div class="vida-strip">
+      <figure><span class="emo">✈️</span><figcaption>Los <b>asientos de un avión</b> forman una matriz (filas × columnas)</figcaption></figure>
+      <figure><span class="emo">🍫</span><figcaption>Una <b>barra de chocolate</b> de 3 × 4 piezas es una matriz</figcaption></figure>
+      <figure><span class="emo">🛒</span><figcaption>Los <b>precios y compras</b> de una tienda forman un sistema de ecuaciones</figcaption></figure>
+      <figure><span class="emo">🧭</span><figcaption>El <b>GPS</b> usa vectores para calcular distancias y direcciones</figcaption></figure>
+      <figure><span class="emo">🎮</span><figcaption>Los <b>videojuegos</b> mueven personajes con vectores y matrices</figcaption></figure>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👩‍💻 Créditos</h3>
+    <p><b>Laboratorio:</b> <span class="lab-nombre">DOREY</span> · <b>Área:</b> Matemáticas · <b>Nivel:</b> Secundaria (14–16 años)</p>
+    <p><b>Creadores:</b> <span id="creditos-creadores"></span></p>
+    <p><b>Institución:</b> <span id="creditos-inst"></span></p>
+  </div>
+</section>
+
+<!-- ===================== MÓDULO 1 ===================== -->
+<section id="m1" class="view">
+  <h2>⚖️ Módulo 1 · Ecuaciones lineales</h2>
+  <div class="grid2">
+    <div class="card accent">
+      <h3>📘 Teoría</h3>
+      <p>Una <b>ecuación lineal con una incógnita</b> es una igualdad donde la incógnita <i>x</i> aparece elevada a la potencia 1. Su forma general es:</p>
+      <div class="formula">a·x + b = c &nbsp;&nbsp;⟹&nbsp;&nbsp; x = (c − b) / a &nbsp;&nbsp;(si a ≠ 0)</div>
+      <ul class="clean">
+        <li><b>a</b> es el coeficiente (cuánto cambia cada unidad de x).</li>
+        <li><b>b</b> es el término fijo (lo que ya hay al comenzar).</li>
+        <li><b>c</b> es el resultado que queremos obtener.</li>
+      </ul>
+      <p><b>Idea clave:</b> lo que haces de un lado de la igualdad lo haces del otro, como en una balanza equilibrada.</p>
+      <p><b>Casos especiales:</b> si a = 0 y b = c hay infinitas soluciones; si a = 0 y b ≠ c no hay solución.</p>
+    </div>
+    <div class="card">
+      <h3>🌎 Ejemplos reales</h3>
+      <p>🚕 <b>Taxi:</b> el banderazo cuesta $5 y cada km $2. Tengo $15. ¿Cuántos km puedo viajar? → 2x + 5 = 15</p>
+      <button class="btn sec small" data-set="m1-a=2;m1-b=5;m1-c=15;" data-mod="m1">Usar ejemplo del taxi</button>
+      <p style="margin-top:12px">🐷 <b>Ahorro:</b> tengo $4 y ahorro $3 por semana. ¿En cuántas semanas tendré $19? → 3x + 4 = 19</p>
+      <button class="btn sec small" data-set="m1-a=3;m1-b=4;m1-c=19;" data-mod="m1">Usar ejemplo del ahorro</button>
+      <p style="margin-top:12px">📱 <b>Plan de datos:</b> pagas $10 fijos y $1 por GB extra; tu factura fue $16 → x + 10 = 16.</p>
+      <button class="btn sec small" data-set="m1-a=1;m1-b=10;m1-c=16;" data-mod="m1">Usar ejemplo del plan</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Simulación: a·x + b = c</h3>
+    <div class="sim">
+      <div class="controls">
+        <div class="slider" data-id="m1-a" data-mod="m1" data-label="a (coeficiente)" data-min="-10" data-max="10" data-step="1" data-val="2"></div>
+        <div class="slider" data-id="m1-b" data-mod="m1" data-label="b (término fijo)" data-min="-20" data-max="20" data-step="1" data-val="3"></div>
+        <div class="slider" data-id="m1-c" data-mod="m1" data-label="c (resultado)" data-min="-20" data-max="20" data-step="1" data-val="11"></div>
+        <div class="slider" data-id="m1-speed" data-mod="m1" data-label="Velocidad de la animación" data-min="1" data-max="5" data-step="1" data-val="2"></div>
+        <button class="btn" id="m1-play">▶ Animar x</button>
+        <button class="btn neu" id="m1-pause">⏸ Pausar</button>
+        <button class="btn sec" id="m1-reset">↺ Reiniciar</button>
+        <p class="note" style="margin-top:10px"><b>Instrucciones:</b> mueve los deslizadores. La recta turquesa es y = a·x + b; la recta gris es y = c. <b>La solución está donde se cruzan.</b> Pulsa «Animar x» para ver un punto recorrer la recta.</p>
+      </div>
+      <div class="display">
+        <canvas id="m1-canvas" data-ratio="0.72"></canvas>
+        <div class="resultado" id="m1-res"></div>
+        <div class="scroll-x"><table class="t" id="m1-tabla"></table></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <h3>✅ Reto del módulo</h3>
+    <p>Ajusta <b>a</b>, <b>b</b> y <b>c</b> para que la solución sea exactamente <b>x = 4</b> (con a ≠ 0).</p>
+    <button class="btn" data-reto="m1">Comprobar reto</button>
+    <div class="fb" id="reto-m1"></div>
+  </div>
+</section>
+
+<!-- ===================== MÓDULO 2 ===================== -->
+<section id="m2" class="view">
+  <h2>✖️ Módulo 2 · Sistemas de ecuaciones lineales</h2>
+  <div class="grid2">
+    <div class="card accent">
+      <h3>📘 Teoría</h3>
+      <p>Un <b>sistema de ecuaciones lineales 2×2</b> son dos ecuaciones con dos incógnitas que deben cumplirse <b>a la vez</b>:</p>
+      <div class="formula">a₁x + b₁y = c₁<br>a₂x + b₂y = c₂</div>
+      <p>Cada ecuación es una <b>recta</b>. Hay tres posibilidades:</p>
+      <ul class="clean">
+        <li>🟢 <b>Una solución:</b> las rectas se cruzan en un punto (determinante ≠ 0).</li>
+        <li>🔵 <b>Infinitas soluciones:</b> son la misma recta.</li>
+        <li>🔴 <b>Ninguna solución:</b> son rectas paralelas distintas.</li>
+      </ul>
+      <p><b>Método de Cramer:</b> Δ = a₁b₂ − a₂b₁; &nbsp; x = (c₁b₂ − c₂b₁)/Δ; &nbsp; y = (a₁c₂ − a₂c₁)/Δ</p>
+    </div>
+    <div class="card">
+      <h3>🌎 Ejemplos reales</h3>
+      <p>🛒 <b>Tienda:</b> un cuaderno (x) y un lápiz (y) cuestan $7 juntos; dos cuadernos y un lápiz cuestan $11.</p>
+      <button class="btn sec small" data-set="m2-a1=1;m2-b1=1;m2-c1=7;m2-a2=2;m2-b2=1;m2-c2=11;" data-mod="m2">Ver sistema con una solución</button>
+      <p style="margin-top:12px">🚫 <b>Imposible:</b> «x + y = 4» y «x + y = 8» no pueden ser ciertas a la vez.</p>
+      <button class="btn sec small" data-set="m2-a1=1;m2-b1=1;m2-c1=4;m2-a2=1;m2-b2=1;m2-c2=8;" data-mod="m2">Ver rectas paralelas</button>
+      <p style="margin-top:12px">♾️ <b>Redundante:</b> «x + y = 4» y «2x + 2y = 8» dicen lo mismo.</p>
+      <button class="btn sec small" data-set="m2-a1=1;m2-b1=1;m2-c1=4;m2-a2=2;m2-b2=2;m2-c2=8;" data-mod="m2">Ver misma recta</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Simulación: dos rectas</h3>
+    <div class="sim">
+      <div class="controls">
+        <b style="color:var(--turq-osc)">Ecuación 1</b>
+        <div class="slider" data-id="m2-a1" data-mod="m2" data-label="a₁" data-min="-10" data-max="10" data-step="1" data-val="1"></div>
+        <div class="slider" data-id="m2-b1" data-mod="m2" data-label="b₁" data-min="-10" data-max="10" data-step="1" data-val="1"></div>
+        <div class="slider" data-id="m2-c1" data-mod="m2" data-label="c₁" data-min="-20" data-max="20" data-step="1" data-val="7"></div>
+        <b style="color:var(--cielo-osc)">Ecuación 2</b>
+        <div class="slider" data-id="m2-a2" data-mod="m2" data-label="a₂" data-min="-10" data-max="10" data-step="1" data-val="2"></div>
+        <div class="slider" data-id="m2-b2" data-mod="m2" data-label="b₂" data-min="-10" data-max="10" data-step="1" data-val="1"></div>
+        <div class="slider" data-id="m2-c2" data-mod="m2" data-label="c₂" data-min="-20" data-max="20" data-step="1" data-val="11"></div>
+        <div class="slider" data-id="m2-speed" data-mod="m2" data-label="Velocidad de la animación" data-min="1" data-max="5" data-step="1" data-val="2"></div>
+        <button class="btn" id="m2-play">▶ Mover la recta 2</button>
+        <button class="btn neu" id="m2-pause">⏸ Pausar</button>
+        <button class="btn sec" id="m2-reset">↺ Reiniciar</button>
+        <p class="note" style="margin-top:10px"><b>Instrucciones:</b> cambia los coeficientes y observa cómo se mueven las rectas. «Mover la recta 2» hace variar c₂ automáticamente: verás cómo el punto de cruce se desplaza.</p>
+      </div>
+      <div class="display">
+        <canvas id="m2-canvas" data-ratio="0.75"></canvas>
+        <div class="resultado" id="m2-res"></div>
+        <div class="scroll-x"><table class="t" id="m2-pasos"></table></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <h3>✅ Reto del módulo</h3>
+    <p>Configura el sistema para que la solución sea <b>x = 2, y = 1</b>.</p>
+    <button class="btn" data-reto="m2">Comprobar reto</button>
+    <div class="fb" id="reto-m2"></div>
+  </div>
+</section>
+
+<!-- ===================== MÓDULO 3 ===================== -->
+<section id="m3" class="view">
+  <h2>🔢 Módulo 3 · Operaciones con matrices</h2>
+  <div class="grid2">
+    <div class="card accent">
+      <h3>📘 Teoría</h3>
+      <p>Una <b>matriz</b> es una tabla rectangular de números ordenados en <b>filas</b> (horizontales) y <b>columnas</b> (verticales). Una matriz de m filas y n columnas tiene dimensión <b>m × n</b>.</p>
+      <ul class="clean">
+        <li><b>Suma / resta:</b> se suman o restan elementos en la misma posición (misma dimensión).</li>
+        <li><b>Producto por un número k:</b> multiplica cada elemento por k.</li>
+        <li><b>Producto A·B:</b> el elemento (i, j) = fila i de A · columna j de B (suma de productos).</li>
+        <li><b>Transpuesta Aᵀ:</b> las filas pasan a ser columnas.</li>
+        <li><b>Determinante:</b> en 2×2, det = ad − bc.</li>
+      </ul>
+      <div class="formula">[a b; c d] → det = a·d − b·c</div>
+    </div>
+    <div class="card">
+      <h3>🌎 Las matrices en la vida diaria</h3>
+      <div class="vida-strip">
+        <figure><span class="emo">✈️</span><figcaption>Asientos de un avión: 6 filas × 4 columnas</figcaption></figure>
+        <figure><span class="emo">🍫</span><figcaption>Chocolate de 3 × 4 piezas</figcaption></figure>
+        <figure><span class="emo">🎬</span><figcaption>Butacas de un cine</figcaption></figure>
+        <figure><span class="emo">🖼️</span><figcaption>Los píxeles de una foto</figcaption></figure>
+      </div>
+      <p>Prueba más abajo las dos actividades visuales: <b>la barra de chocolate</b> y <b>el avión</b>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Simulación: calculadora de matrices</h3>
+    <div class="controls" style="margin-bottom:12px">
+      <label>Tamaño:
+        <select id="m3-size"><option value="2">2 × 2</option><option value="3">3 × 3</option></select></label>
+      &nbsp;
+      <label>Operación:
+        <select id="m3-op">
+          <option value="suma">A + B</option>
+          <option value="resta">A − B</option>
+          <option value="escalar">k · A</option>
+          <option value="producto">A × B</option>
+          <option value="transpuesta">Aᵀ (transpuesta)</option>
+          <option value="det">det(A)</option>
+        </select></label>
+      &nbsp;
+      <label>k: <input type="number" id="m3-k" value="2" step="1" style="width:80px"></label>
+      <div style="margin-top:8px">
+        <button class="btn sec small" id="m3-rand">🎲 Valores al azar</button>
+        <button class="btn small" id="m3-play">▶ Animar el producto A × B</button>
+        <button class="btn neu small" id="m3-pause">⏸ Pausar</button>
+        <button class="btn sec small" id="m3-reset">↺ Reiniciar</button>
+      </div>
+    </div>
+    <div class="matrices-row" id="m3-zona">
+      <div class="matrix-wrap"><div class="mt">A</div><div id="m3-A"></div></div>
+      <span class="op-sign" id="m3-signo">+</span>
+      <div class="matrix-wrap" id="m3-Bwrap"><div class="mt">B</div><div id="m3-B"></div></div>
+      <span class="op-sign">=</span>
+      <div class="matrix-wrap"><div class="mt">Resultado</div><div id="m3-R"></div></div>
+    </div>
+    <div class="resultado" id="m3-expl"></div>
+    <p class="note" style="margin-top:10px"><b>Instrucciones:</b> escribe números en A y B (los cambios se calculan al instante). Elige la operación. Con «Animar el producto» verás cómo cada fila de A se combina con cada columna de B.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>🍫 Actividad: la barra de chocolate</h3>
+      <p>Una barra con <b>r filas</b> y <b>c columnas</b> es una matriz r × c. Haz clic en las piezas para comerlas.</p>
+      <div class="slider" data-id="m3-cr" data-mod="m3" data-label="Filas (r)" data-min="1" data-max="6" data-step="1" data-val="3"></div>
+      <div class="slider" data-id="m3-cc" data-mod="m3" data-label="Columnas (c)" data-min="1" data-max="8" data-step="1" data-val="4"></div>
+      <div id="m3-choco" class="chocolate"></div>
+      <div class="resultado" id="m3-choco-info"></div>
+      <button class="btn sec small" id="m3-choco-reset" style="margin-top:8px">↺ Nueva barra</button>
+    </div>
+    <div class="card">
+      <h3>✈️ Actividad: asientos del avión</h3>
+      <p>Haz clic en un asiento para ocuparlo. El avión se convierte en una <b>matriz de ceros y unos</b> (1 = ocupado).</p>
+      <div class="avion" id="m3-avion"></div>
+      <div class="scroll-x"><div id="m3-avion-matriz"></div></div>
+      <div class="resultado" id="m3-avion-info"></div>
+      <button class="btn sec small" id="m3-avion-azar" style="margin-top:8px">🎲 Ocupar al azar</button>
+      <button class="btn neu small" id="m3-avion-vaciar" style="margin-top:8px">Vaciar avión</button>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <h3>✅ Reto del módulo</h3>
+    <p>Con las matrices que tienes ahora y la operación elegida, calcula <b>a mano</b> el elemento de la <b>fila 1, columna 1</b> del resultado (si es det(A), escribe el determinante) y compruébalo.</p>
+    <input type="text" id="m3-reto-in" inputmode="decimal" placeholder="Tu respuesta" style="width:140px">
+    <button class="btn" data-reto="m3">Comprobar reto</button>
+    <div class="fb" id="reto-m3"></div>
+  </div>
+</section>
+
+<!-- ===================== MÓDULO 4 ===================== -->
+<section id="m4" class="view">
+  <h2>🧭 Módulo 4 · Vectores</h2>
+  <div class="grid2">
+    <div class="card accent">
+      <h3>📘 Teoría</h3>
+      <p>Un <b>vector</b> u = (x, y) tiene <b>magnitud</b> y <b>dirección</b>: se dibuja como una flecha desde el origen.</p>
+      <ul class="clean">
+        <li><b>Módulo:</b> longitud del vector, |u| = √(x² + y²).</li>
+        <li><b>Suma / resta:</b> se operan coordenada a coordenada.</li>
+        <li><b>Producto por un número k:</b> estira (|k| &gt; 1), encoge (|k| &lt; 1) o invierte (k &lt; 0).</li>
+        <li><b>Producto punto:</b> u·v = x₁x₂ + y₁y₂.</li>
+        <li><b>Ortogonalidad:</b> u ⊥ v exactamente cuando u·v = 0 (forman 90°).</li>
+        <li><b>Determinante</b> det[u v] = x₁y₂ − y₁x₂: es el área del paralelogramo; vale 0 si son paralelos.</li>
+      </ul>
+      <div class="formula">cos θ = (u·v) / (|u|·|v|)</div>
+    </div>
+    <div class="card">
+      <h3>🌎 Ejemplos reales</h3>
+      <p>🚤 <b>Barco y corriente:</b> el barco va al este (4, 0) y la corriente lo empuja al norte (0, 3): la velocidad real es la suma, de módulo 5.</p>
+      <button class="btn sec small" data-set="m4-ux=4;m4-uy=0;m4-vx=0;m4-vy=3;" data-mod="m4">Ver barco y corriente</button>
+      <p style="margin-top:12px">📐 <b>Esquina de una casa:</b> las paredes forman 90°, sus vectores son ortogonales.</p>
+      <button class="btn sec small" data-set="m4-ux=3;m4-uy=2;m4-vx=-2;m4-vy=3;" data-mod="m4">Ver vectores ortogonales</button>
+      <p style="margin-top:12px">🛤️ <b>Rieles del tren:</b> son paralelos, su determinante es 0.</p>
+      <button class="btn sec small" data-set="m4-ux=2;m4-uy=1;m4-vx=4;m4-vy=2;" data-mod="m4">Ver vectores paralelos</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Simulación: vectores en el plano</h3>
+    <div class="sim">
+      <div class="controls">
+        <b style="color:var(--turq-osc)">Vector u</b>
+        <div class="slider" data-id="m4-ux" data-mod="m4" data-label="u<sub>x</sub>" data-min="-8" data-max="8" data-step="0.5" data-val="3"></div>
+        <div class="slider" data-id="m4-uy" data-mod="m4" data-label="u<sub>y</sub>" data-min="-8" data-max="8" data-step="0.5" data-val="2"></div>
+        <b style="color:var(--cielo-osc)">Vector v</b>
+        <div class="slider" data-id="m4-vx" data-mod="m4" data-label="v<sub>x</sub>" data-min="-8" data-max="8" data-step="0.5" data-val="-2"></div>
+        <div class="slider" data-id="m4-vy" data-mod="m4" data-label="v<sub>y</sub>" data-min="-8" data-max="8" data-step="0.5" data-val="4"></div>
+        <div class="slider" data-id="m4-k" data-mod="m4" data-label="k (escalar)" data-min="-3" data-max="3" data-step="0.5" data-val="2"></div>
+        <div class="slider" data-id="m4-speed" data-mod="m4" data-label="Velocidad de rotación" data-min="1" data-max="5" data-step="1" data-val="2"></div>
+        <button class="btn" id="m4-play">▶ Rotar v</button>
+        <button class="btn neu" id="m4-pause">⏸ Pausar</button>
+        <button class="btn sec" id="m4-reset">↺ Reiniciar</button>
+        <p class="note" style="margin-top:10px"><b>Instrucciones:</b> cambia las coordenadas o pulsa «Rotar v»: el vector v gira y verás el momento exacto en que u·v = 0 (¡ortogonales!).</p>
+      </div>
+      <div class="display">
+        <canvas id="m4-canvas" data-ratio="0.8"></canvas>
+        <div id="m4-badge" style="margin-top:8px"></div>
+        <div class="scroll-x"><table class="t" id="m4-res"></table></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <h3>✅ Reto del módulo</h3>
+    <p>Mueve los deslizadores para que <b>u y v sean ortogonales</b> (u·v = 0) y ninguno sea el vector cero.</p>
+    <button class="btn" data-reto="m4">Comprobar reto</button>
+    <div class="fb" id="reto-m4"></div>
+  </div>
+</section>
+
+<!-- ===================== APLICACIÓN A LA VIDA ===================== -->
+<section id="vida" class="view">
+  <h2>🌎 Aplicación a la vida</h2>
+  <p>Tres situaciones cotidianas donde el álgebra lineal resuelve problemas reales.</p>
+
+  <div class="card accent">
+    <span class="tag">Sistemas de ecuaciones</span>
+    <h3>🛒 La tienda: ¿cuánto cuesta cada cosa?</h3>
+    <p>Dos recibos de una panadería. Si no conoces los precios del pan y del jugo, ¿puedes descubrirlos con los recibos?</p>
+    <div class="sim">
+      <div class="controls">
+        <div class="slider" data-id="v-n1" data-mod="vida" data-label="Recibo 1: panes 🥖" data-min="0" data-max="10" data-step="1" data-val="2"></div>
+        <div class="slider" data-id="v-m1" data-mod="vida" data-label="Recibo 1: jugos 🧃" data-min="0" data-max="10" data-step="1" data-val="1"></div>
+        <div class="slider" data-id="v-n2" data-mod="vida" data-label="Recibo 2: panes 🥖" data-min="0" data-max="10" data-step="1" data-val="1"></div>
+        <div class="slider" data-id="v-m2" data-mod="vida" data-label="Recibo 2: jugos 🧃" data-min="0" data-max="10" data-step="1" data-val="3"></div>
+        <div class="slider" data-id="v-p" data-mod="vida" data-label="Precio real del pan ($)" data-min="1" data-max="20" data-step="1" data-val="5"></div>
+        <div class="slider" data-id="v-q" data-mod="vida" data-label="Precio real del jugo ($)" data-min="1" data-max="20" data-step="1" data-val="8"></div>
+      </div>
+      <div class="display">
+        <div class="resultado" id="v-tienda"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <span class="tag">Operaciones con matrices</span>
+    <h3>📊 Ventas semanales: producto de matrices</h3>
+    <p>Una tienda anota cuántas unidades vendió de dos productos durante tres días. Multiplicando la matriz de ventas por el vector de precios obtenemos el <b>ingreso diario</b>.</p>
+    <div class="matrices-row" id="v-ventas"></div>
+    <div class="resultado" id="v-ventas-res"></div>
+    <button class="btn sec small" id="v-ventas-reset" style="margin-top:8px">↺ Valores iniciales</button>
+  </div>
+
+  <div class="card accent">
+    <span class="tag">Vectores</span>
+    <h3>🧭 Navegación: ¿a qué distancia quedé?</h3>
+    <p>Caminas dos tramos (este y norte, en km). La suma de vectores te da el desplazamiento total y su módulo la distancia en línea recta.</p>
+    <div class="sim">
+      <div class="controls">
+        <div class="slider" data-id="v-e1" data-mod="vida" data-label="Tramo 1 · Este (km)" data-min="-10" data-max="10" data-step="1" data-val="6"></div>
+        <div class="slider" data-id="v-n1b" data-mod="vida" data-label="Tramo 1 · Norte (km)" data-min="-10" data-max="10" data-step="1" data-val="2"></div>
+        <div class="slider" data-id="v-e2" data-mod="vida" data-label="Tramo 2 · Este (km)" data-min="-10" data-max="10" data-step="1" data-val="2"></div>
+        <div class="slider" data-id="v-n2b" data-mod="vida" data-label="Tramo 2 · Norte (km)" data-min="-10" data-max="10" data-step="1" data-val="6"></div>
+        <button class="btn sec small" id="v-nav-reset">↺ Reiniciar</button>
+      </div>
+      <div class="display">
+        <canvas id="v-canvas" data-ratio="0.75"></canvas>
+        <div class="resultado" id="v-nav-res"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRÁCTICAS ===================== -->
+<section id="practicas" class="view">
+  <h2>📝 Prácticas de laboratorio</h2>
+  <div class="card sky">
+    <p>Resuelve los 10 ejercicios. Puedes usar las simulaciones para apoyarte. Si te equivocas, recibirás una pista y podrás intentarlo otra vez.</p>
+    <b id="ej-progreso-txt">Completados: 0 de 10</b>
+    <div class="progress"><div id="ej-progreso"></div></div>
+  </div>
+  <div class="tabs" id="ej-tabs">
+    <button data-nivel="todos" class="active">Todos</button>
+    <button data-nivel="basico">Nivel básico</button>
+    <button data-nivel="intermedio">Nivel intermedio</button>
+    <button data-nivel="avanzado">Nivel avanzado</button>
+  </div>
+  <div id="ej-lista"></div>
+</section>
+
+<!-- ===================== EVALUACIÓN ===================== -->
+<section id="evaluacion" class="view">
+  <h2>🎯 Evaluación interactiva</h2>
+  <div class="card sky">
+    <p>10 preguntas de <b>10 puntos</b> cada una: selección múltiple, completar respuestas, actividad práctica e interpretación de problemas. Al final recibirás tu nota sobre 100, el resumen y recomendaciones. Puedes volver a intentarlo.</p>
+  </div>
+  <div id="eval-form"></div>
+  <div style="margin:10px 0">
+    <button class="btn" id="eval-calificar">Calificar evaluación</button>
+    <button class="btn sec" id="eval-reintentar">↺ Nuevo intento</button>
+  </div>
+  <div id="eval-result"></div>
+</section>
+
+<!-- ===================== CREA TU PROPIO EXPERIMENTO ===================== -->
+<section id="experimento" class="view">
+  <h2>🧪 Crea tu propio experimento</h2>
+  <div class="card sky">
+    <p>Elige un tema, escribe tus valores, genera la simulación, <b>guarda</b> la configuración y compara varias pruebas. Tus experimentos se guardan en este navegador y puedes <b>exportarlos</b> a Excel (CSV) o JSON.</p>
+  </div>
+  <div class="card">
+    <div class="sim">
+      <div class="controls">
+        <label><b>1. Tema:</b><br>
+          <select id="ex-tema">
+            <option value="ecuacion">Ecuación lineal</option>
+            <option value="sistema">Sistema 2×2</option>
+            <option value="matrices">Matrices 2×2</option>
+            <option value="vectores">Vectores</option>
+          </select></label>
+        <div id="ex-params" style="margin-top:10px"></div>
+        <button class="btn" id="ex-generar">▶ Generar simulación</button>
+        <button class="btn dark" id="ex-guardar">💾 Guardar experimento</button>
+        <button class="btn sec" id="ex-reset">↺ Reiniciar valores</button>
+        <div class="fb" id="ex-fb"></div>
+      </div>
+      <div class="display">
+        <canvas id="ex-canvas" data-ratio="0.75"></canvas>
+        <div class="resultado" id="ex-res">Pulsa «Generar simulación» para ver el resultado.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📚 Experimentos guardados</h3>
+    <div class="scroll-x"><table class="t" id="ex-tabla"></table></div>
+    <button class="btn sec small" id="ex-comparar">⚖️ Comparar seleccionados</button>
+    <button class="btn small" id="ex-csv">⬇ Exportar CSV</button>
+    <button class="btn small" id="ex-json">⬇ Exportar JSON</button>
+    <button class="btn neu small" id="ex-borrar">🗑 Borrar todos</button>
+    <div class="scroll-x"><table class="t" id="ex-comp" style="margin-top:12px"></table></div>
+  </div>
+</section>
+
+<!-- ===================== AYUDA ===================== -->
+<section id="ayuda" class="view">
+  <h2>❓ Ayuda e instrucciones</h2>
+  <div class="grid2">
+    <div class="card accent">
+      <h3>Cómo usar el laboratorio</h3>
+      <ul class="clean">
+        <li><b>Menú superior:</b> te lleva a cada módulo. En el celular, toca el botón ☰.</li>
+        <li><b>Deslizadores:</b> mueven los valores y la gráfica cambia al instante.</li>
+        <li><b>Botones ▶ ⏸ ↺:</b> inician, pausan y reinician las animaciones.</li>
+        <li><b>Botones «Usar ejemplo»:</b> cargan una situación real en la simulación.</li>
+        <li><b>Retos:</b> cada módulo tiene un reto para comprobar lo aprendido.</li>
+        <li><b>↺ Reiniciar (menú):</b> devuelve todas las simulaciones a su estado inicial.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Cómo leer las gráficas</h3>
+      <ul class="clean">
+        <li>Los ejes se cruzan en el origen (0, 0). La cuadrícula marca unidades.</li>
+        <li>Turquesa y azul cielo identifican cada objeto (ecuación 1 / 2, vector u / v).</li>
+        <li>Los puntos negros con etiqueta marcan soluciones o resultados.</li>
+        <li>En vectores, la línea punteada es el paralelogramo de la suma.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Prácticas y evaluación</h3>
+      <ul class="clean">
+        <li>Escribe tus respuestas (puedes usar coma o punto decimal) y pulsa «Comprobar».</li>
+        <li>Si fallas verás una pista; con «Ver procedimiento» aparece la solución explicada.</li>
+        <li>La evaluación suma 100 puntos y puedes repetirla las veces que quieras.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Para docentes y creadores</h3>
+      <p>Consulta el archivo <b>GUIA.md</b> para cambiar textos, colores, el nombre del laboratorio, agregar ejercicios, imágenes y publicar el laboratorio en Internet.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <b class="lab-nombre">DOREY</b> · Laboratorio Virtual de Álgebra Lineal · <span id="pie-inst"></span><br>
+  <span id="pie-creadores"></span>
+</footer>
+
+<script>
+/* =====================================================================
+   DOREY · Laboratorio Virtual de Álgebra Lineal
+   app.js — lógica, simulaciones, ejercicios y evaluación
+   ---------------------------------------------------------------------
+   ÍNDICE (busca estos títulos con Ctrl+F):
+   0. CONFIGURACIÓN (nombre, creadores, institución)  ← edita aquí
+   1. Utilidades
+   2. Matemáticas (objeto Mate)
+   3. Dibujo en canvas (plano cartesiano)
+   4. Módulos: M1, M2, M3, M4, VIDA
+   5. Ejercicios (EJERCICIOS)                          ← agrega ejercicios aquí
+   6. Evaluación (EVALUACION)                          ← edita preguntas aquí
+   7. Experimentos propios
+   8. Navegación e inicio
+   ===================================================================== */
+'use strict';
+
+/* ---------- 0. CONFIGURACIÓN ---------- */
+const CONFIG = {
+  nombre: 'DOREY',
+  subtitulo: 'Laboratorio de Álgebra Lineal',
+  institucion: 'UNAD',
+  creadores: ['Yineidy Fernández', 'Gerlian David Reyes', 'Estephanie Astacio', 'Onielis Rodríguez', 'Robelina Espinosa']
+};
+
+/* ---------- 1. UTILIDADES ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const EPS = 1e-9;
+const z = v => Math.abs(v) < EPS;
+const casi = (a, b, t) => Math.abs(a - b) <= (t === undefined ? 1e-6 : t);
+
+function fmt(n, d) {
+  if (d === undefined) d = 2;
+  if (typeof n !== 'number' || !isFinite(n)) return '—';
+  const f = Math.pow(10, d);
+  let r = Math.round(n * f) / f;
+  if (r === 0) r = 0;
+  return String(r).replace('.', ',');
+}
+function parseNum(s) {
+  if (typeof s === 'number') return s;
+  const t = String(s).trim().replace(',', '.');
+  if (t === '') return NaN;
+  return Number(t);
+}
+const pa = n => (n < 0 ? '(' + fmt(n) + ')' : fmt(n));           // paréntesis para negativos
+const SUB = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'];
+const sub = n => SUB[n];
+
+function termino(co, v, primero) {
+  if (z(co)) return '';
+  const m = Math.abs(co) === 1 ? '' : fmt(Math.abs(co));
+  if (primero) return (co < 0 ? '−' : '') + m + v;
+  return ' ' + (co < 0 ? '−' : '+') + ' ' + m + v;
+}
+function ecuacion2(a, b, c, v1, v2) {
+  let t = termino(a, v1 || 'x', true);
+  t += termino(b, v2 || 'y', t === '');
+  if (t === '') t = '0';
+  return t + ' = ' + fmt(c);
+}
+function ecuacion1(a, b, c) {
+  let t = termino(a, 'x', true);
+  if (t === '') t = '0';
+  if (!z(b)) t += ' ' + (b < 0 ? '−' : '+') + ' ' + fmt(Math.abs(b));
+  return t + ' = ' + fmt(c);
+}
+
+/* Deslizadores: se crean a partir de <div class="slider" data-id=... data-min=...> */
+function construirSliders() {
+  $$('.slider[data-id]').forEach(el => {
+    const id = el.dataset.id;
+    el.innerHTML =
+      '<label for="' + id + '"><span>' + el.dataset.label + '</span><output id="' + id + '-out">' + fmt(Number(el.dataset.val)) + '</output></label>' +
+      '<input type="range" id="' + id + '" min="' + el.dataset.min + '" max="' + el.dataset.max + '" step="' + el.dataset.step +
+      '" value="' + el.dataset.val + '" data-mod="' + el.dataset.mod + '">';
+  });
+}
+const getV = id => Number($('#' + id).value);
+function setV(id, v, real) {
+  const el = $('#' + id);
+  if (!el) return;
+  el.value = v;
+  $('#' + id + '-out').textContent = fmt(real !== undefined ? real : Number(el.value));
+}
+function reiniciarSliders(prefijos) {
+  $$('.slider[data-id]').forEach(el => {
+    if (prefijos.some(p => el.dataset.id.indexOf(p) === 0)) setV(el.dataset.id, el.dataset.val);
+  });
+}
+
+/* Temporizadores de animación */
+const Timers = {};
+function arranca(k, fn, ms) { para(k); Timers[k] = setInterval(fn, ms); }
+function para(k) { if (Timers[k]) { clearInterval(Timers[k]); delete Timers[k]; } }
+function paraTodo() { Object.keys(Timers).forEach(para); }
+
+function mensaje(el, ok, html) {
+  el.className = 'fb show ' + (ok === 'info' ? 'info' : ok ? 'ok' : 'err');
+  el.innerHTML = html;
+}
+function descargar(nombre, texto, tipo) {
+  const blob = new Blob([texto], { type: tipo });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = nombre;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 500);
+}
+function barajar(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+const Almacen = {
+  _mem: {},
+  leer(k, def) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return this._mem[k] !== undefined ? this._mem[k] : def; } },
+  guardar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { this._mem[k] = v; } }
+};
+
+/* ---------- 2. MATEMÁTICAS ---------- */
+const Mate = {
+  lineal(a, b, c) {                       // a·x + b = c
+    if (z(a)) return z(b - c) ? { tipo: 'infinitas' } : { tipo: 'ninguna' };
+    return { tipo: 'unica', x: (c - b) / a };
+  },
+  sistema(a1, b1, c1, a2, b2, c2) {        // a1x+b1y=c1 ; a2x+b2y=c2
+    const det = a1 * b2 - a2 * b1;
+    if (!z(det)) return { tipo: 'unica', det, x: (c1 * b2 - c2 * b1) / det, y: (a1 * c2 - a2 * c1) / det };
+    const rA = [a1, b1, a2, b2].some(v => !z(v)) ? 1 : 0;
+    const menores = [a1 * c2 - a2 * c1, b1 * c2 - b2 * c1];
+    const rAug = menores.some(v => !z(v)) ? 2 : ([a1, b1, c1, a2, b2, c2].some(v => !z(v)) ? 1 : 0);
+    return { tipo: rA === rAug ? 'infinitas' : 'ninguna', det };
+  },
+  suma: (A, B) => A.map((f, i) => f.map((v, j) => v + B[i][j])),
+  resta: (A, B) => A.map((f, i) => f.map((v, j) => v - B[i][j])),
+  esc: (k, A) => A.map(f => f.map(v => k * v)),
+  mul(A, B) {
+    return A.map((f, i) => B[0].map((_, j) => f.reduce((s, v, k) => s + v * B[k][j], 0)));
+  },
+  trans: A => A[0].map((_, j) => A.map(f => f[j])),
+  det(A) {
+    const n = A.length;
+    if (n === 1) return A[0][0];
+    if (n === 2) return A[0][0] * A[1][1] - A[0][1] * A[1][0];
+    let d = 0;
+    for (let j = 0; j < n; j++) {
+      const menor = A.slice(1).map(f => f.filter((_, k) => k !== j));
+      d += (j % 2 ? -1 : 1) * A[0][j] * Mate.det(menor);
+    }
+    return d;
+  },
+  mod: u => Math.hypot(u[0], u[1]),
+  punto: (u, v) => u[0] * v[0] + u[1] * v[1],
+  detV: (u, v) => u[0] * v[1] - u[1] * v[0],
+  angulo(u, v) {
+    const m = Mate.mod(u) * Mate.mod(v);
+    if (z(m)) return NaN;
+    const c = Math.max(-1, Math.min(1, Mate.punto(u, v) / m));
+    return Math.acos(c) * 180 / Math.PI;
+  }
+};
+
+/* ---------- 3. DIBUJO EN CANVAS ---------- */
+function prepCanvas(cv) {
+  if (!cv || !cv.getContext) return null;
+  const w = cv.getBoundingClientRect().width;
+  if (!w || w < 50) return null;                       // vista oculta
+  const h = Math.round(w * (parseFloat(cv.dataset.ratio) || 0.75));
+  const dpr = window.devicePixelRatio || 1;
+  cv.style.height = h + 'px';
+  cv.width = Math.round(w * dpr);
+  cv.height = Math.round(h * dpr);
+  let ctx = null;
+  try { ctx = cv.getContext('2d'); } catch (e) { ctx = null; }
+  if (!ctx) return null;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, w, h };
+}
+
+/* Plano cartesiano: xr = rango en x (±xr), yr = rango en y (±yr); si yr es null se mantiene la proporción */
+function crearPlano(cv, xr, yr) {
+  const base = prepCanvas(cv);
+  if (!base) return null;
+  const { ctx, w, h } = base;
+  if (!yr) yr = xr * h / w;
+  const X = x => w / 2 + x / xr * (w / 2);
+  const Y = y => h / 2 - y / yr * (h / 2);
+  const P = { ctx, w, h, X, Y, xr, yr };
+  const Rm = Math.max(xr, yr);
+  const paso = Rm <= 12 ? 1 : Rm <= 25 ? 2 : Rm <= 60 ? 5 : 10;
+
+  P.grid = function () {
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+    ctx.lineWidth = 1; ctx.strokeStyle = '#e3eaee'; ctx.beginPath();
+    for (let x = -Math.floor(xr / paso) * paso; x <= xr; x += paso) { ctx.moveTo(X(x), 0); ctx.lineTo(X(x), h); }
+    for (let y = -Math.floor(yr / paso) * paso; y <= yr; y += paso) { ctx.moveTo(0, Y(y)); ctx.lineTo(w, Y(y)); }
+    ctx.stroke();
+    ctx.strokeStyle = '#111827'; ctx.lineWidth = 1.8; ctx.beginPath();
+    ctx.moveTo(0, Y(0)); ctx.lineTo(w, Y(0)); ctx.moveTo(X(0), 0); ctx.lineTo(X(0), h); ctx.stroke();
+    ctx.fillStyle = '#6B7280'; ctx.font = '11px system-ui,sans-serif';
+    const pl = paso * 2;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    for (let x = -Math.floor(xr / pl) * pl; x <= xr; x += pl) if (x !== 0) ctx.fillText(x, X(x), Y(0) + 3);
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    for (let y = -Math.floor(yr / pl) * pl; y <= yr; y += pl) if (y !== 0) ctx.fillText(y, X(0) - 4, Y(y));
+    ctx.fillStyle = '#111827'; ctx.font = 'bold 13px system-ui,sans-serif';
+    ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText('x', w - 6, Y(0) - 4);
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText('y', X(0) + 6, 4);
+  };
+  P.recta = function (a, b, c, color, dash, lw) {   // a·x + b·y = c
+    ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = lw || 3; ctx.setLineDash(dash || []); ctx.lineCap = 'round';
+    ctx.beginPath();
+    if (!z(b)) { ctx.moveTo(X(-xr), Y((c + a * xr) / b)); ctx.lineTo(X(xr), Y((c - a * xr) / b)); }
+    else if (!z(a)) { ctx.moveTo(X(c / a), 0); ctx.lineTo(X(c / a), h); }
+    ctx.stroke(); ctx.restore();
+  };
+  P.linea = function (x0, y0, x1, y1, color, dash, lw) {
+    ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = lw || 1.6; ctx.setLineDash(dash || []);
+    ctx.beginPath(); ctx.moveTo(X(x0), Y(y0)); ctx.lineTo(X(x1), Y(y1)); ctx.stroke(); ctx.restore();
+  };
+  P.texto = function (t, px, py, color) {
+    ctx.save(); ctx.font = 'bold 13px system-ui,sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    ctx.lineWidth = 4; ctx.strokeStyle = '#fff'; ctx.strokeText(t, px, py);
+    ctx.fillStyle = color || '#111827'; ctx.fillText(t, px, py); ctx.restore();
+  };
+  P.punto = function (x, y, color, etq, r) {
+    ctx.save(); ctx.fillStyle = color; ctx.strokeStyle = '#111827'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(X(x), Y(y), r || 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.restore();
+    if (etq) {
+      let tx = X(x) + 9, ty = Y(y) - 8;
+      if (tx > w - 100) tx = X(x) - 100;
+      if (ty < 16) ty = Y(y) + 22;
+      P.texto(etq, tx, ty, '#111827');
+    }
+  };
+  P.flecha = function (x0, y0, x1, y1, color, etq, dash) {
+    const ax = X(x0), ay = Y(y0), bx = X(x1), by = Y(y1);
+    ctx.save(); ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.setLineDash(dash || []);
+    ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke(); ctx.setLineDash([]);
+    if (Math.hypot(bx - ax, by - ay) > 4) {
+      const ang = Math.atan2(by - ay, bx - ax), L = 12;
+      ctx.beginPath(); ctx.moveTo(bx, by);
+      ctx.lineTo(bx - L * Math.cos(ang - 0.4), by - L * Math.sin(ang - 0.4));
+      ctx.lineTo(bx - L * Math.cos(ang + 0.4), by - L * Math.sin(ang + 0.4));
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+    if (etq) P.texto(etq, bx + 7, by - 6, color);
+  };
+  P.leyenda = function (items) {
+    ctx.save(); ctx.font = '12px system-ui,sans-serif'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    let y = 16;
+    items.forEach(it => {
+      ctx.fillStyle = it[0]; ctx.fillRect(10, y - 5, 14, 10);
+      ctx.fillStyle = '#111827'; ctx.fillText(it[1], 30, y); y += 18;
+    });
+    ctx.restore();
+  };
+  return P;
+}
+
+/* Gráficas reutilizables */
+function dibujaEcuacion(cv, a, b, c, mov) {
+  const s = Mate.lineal(a, b, c);
+  let xr = 10;
+  if (s.tipo === 'unica') xr = Math.max(10, Math.ceil(Math.abs(s.x) * 1.3) + 1);
+  const yr = Math.max(10, Math.abs(c) * 1.25 + 2, Math.abs(b) * 1.25 + 2);
+  const P = crearPlano(cv, xr, yr);
+  if (!P) return null;
+  P.grid();
+  P.recta(0, 1, c, '#6B7280', [8, 6], 2.5);        // y = c
+  P.recta(-a, 1, b, '#0E9AA7', null, 3.5);         // y = a·x + b
+  P.leyenda([['#0E9AA7', 'y = a·x + b'], ['#6B7280', 'y = c']]);
+  if (s.tipo === 'unica') {
+    P.linea(s.x, c, s.x, 0, '#111827', [4, 4]);
+    P.punto(s.x, c, '#30D5C8', 'x = ' + fmt(s.x), 7);
+  }
+  if (mov) {
+    const y = a * mov.x + b;
+    P.linea(mov.x, 0, mov.x, y, '#0E9AA7', [3, 3]);
+    P.punto(mov.x, y, mov.golpe ? '#30D5C8' : '#fff', 'x=' + fmt(mov.x, 1) + ' → y=' + fmt(y, 1), 6);
+  }
+  return { P, s, xr, yr };
+}
+function dibujaSistema(cv, k) {
+  const s = Mate.sistema(k[0], k[1], k[2], k[3], k[4], k[5]);
+  let R = 10;
+  if (s.tipo === 'unica') R = Math.max(10, Math.ceil(Math.max(Math.abs(s.x), Math.abs(s.y)) * 1.4) + 1);
+  const P = crearPlano(cv, R, null);
+  if (!P) return null;
+  P.grid();
+  P.recta(k[0], k[1], k[2], '#0E9AA7', null, 3.5);
+  P.recta(k[3], k[4], k[5], '#3FA9D6', s.tipo === 'infinitas' ? [10, 8] : null, 3.5);
+  P.leyenda([['#0E9AA7', 'Ecuación 1: ' + ecuacion2(k[0], k[1], k[2])], ['#3FA9D6', 'Ecuación 2: ' + ecuacion2(k[3], k[4], k[5])]]);
+  if (s.tipo === 'unica') P.punto(s.x, s.y, '#30D5C8', '(' + fmt(s.x) + '; ' + fmt(s.y) + ')', 7);
+  return { P, s };
+}
+function dibujaVectores(cv, u, v) {
+  const sx = u[0] + v[0], sy = u[1] + v[1];
+  const m = Math.max(Math.abs(u[0]), Math.abs(u[1]), Math.abs(v[0]), Math.abs(v[1]), Math.abs(sx), Math.abs(sy));
+  const R = Math.max(10, Math.ceil(m) + 2);
+  const P = crearPlano(cv, R, null);
+  if (!P) return null;
+  const ctx = P.ctx;
+  P.grid();
+  // paralelogramo de la suma
+  P.linea(u[0], u[1], sx, sy, '#6B7280', [6, 5], 1.6);
+  P.linea(v[0], v[1], sx, sy, '#6B7280', [6, 5], 1.6);
+  // marca de ángulo recto
+  const mu = Mate.mod(u), mv = Mate.mod(v);
+  if (mu > EPS && mv > EPS) {
+    const cosA = Mate.punto(u, v) / (mu * mv);
+    const tu = Math.atan2(u[1], u[0]), tv = Math.atan2(v[1], v[0]);
+    let diff = tv - tu;
+    while (diff > Math.PI) diff -= 2 * Math.PI;
+    while (diff <= -Math.PI) diff += 2 * Math.PI;
+    ctx.save();
+    ctx.strokeStyle = Math.abs(cosA) < 0.012 ? '#15803D' : '#6B7280';
+    ctx.lineWidth = 2;
+    if (Math.abs(cosA) < 0.012) {
+      const d = 0.9, ux = u[0] / mu * d, uy = u[1] / mu * d, vx = v[0] / mv * d, vy = v[1] / mv * d;
+      ctx.beginPath(); ctx.moveTo(P.X(ux), P.Y(uy)); ctx.lineTo(P.X(ux + vx), P.Y(uy + vy)); ctx.lineTo(P.X(vx), P.Y(vy)); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.arc(P.X(0), P.Y(0), 28, -tu, -tv, diff > 0); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  P.flecha(0, 0, sx, sy, '#111827', 'u+v');
+  P.flecha(0, 0, u[0], u[1], '#0E9AA7', 'u');
+  P.flecha(0, 0, v[0], v[1], '#3FA9D6', 'v');
+  return { P };
+}
+
+/* ---------- 4. MÓDULOS ---------- */
+const MODS = {};
+const RETOS = {};
+
+/* ===== MÓDULO 1: ecuaciones lineales ===== */
+MODS.m1 = {
+  px: -10, dir: 1, xr: 10, anim: false,
+  datos() { return { a: getV('m1-a'), b: getV('m1-b'), c: getV('m1-c') }; },
+  update() {
+    const { a, b, c } = this.datos();
+    const s = Mate.lineal(a, b, c);
+    const mov = this.anim ? { x: this.px, golpe: false } : null;
+    if (mov && s.tipo === 'unica') mov.golpe = Math.abs(this.px - s.x) <= 0.08 * getV('m1-speed') / 2 + 1e-9;
+    const g = dibujaEcuacion($('#m1-canvas'), a, b, c, mov);
+    if (g) this.xr = g.xr;
+    let h = '<div>Ecuación: <b>' + ecuacion1(a, b, c) + '</b></div>';
+    if (s.tipo === 'unica') {
+      h += '<div>x = (c − b) / a = (' + fmt(c) + ' − ' + pa(b) + ') / ' + pa(a) + ' = <span class="big">' + fmt(s.x) + '</span></div>';
+      h += '<div>Comprobación: ' + fmt(a) + '·' + pa(s.x) + ' + ' + pa(b) + ' = <b>' + fmt(a * s.x + b) + '</b> ✔</div>';
+    } else if (s.tipo === 'infinitas') {
+      h += '<div>Como a = 0 y b = c, la igualdad es <b>siempre cierta</b>: <span class="big">infinitas soluciones</span>.</div>';
+    } else {
+      h += '<div>Como a = 0 y b ≠ c, la igualdad <b>nunca se cumple</b>: <span class="big">sin solución</span>.</div>';
+    }
+    if (this.anim) h += '<div>▶ Punto en movimiento: x = ' + fmt(this.px, 1) + ' → a·x + b = ' + fmt(a * this.px + b, 1) + (mov && mov.golpe ? ' <b>¡Igual a c!</b>' : '') + '</div>';
+    $('#m1-res').innerHTML = h;
+    const xs = [-3, -2, -1, 0, 1, 2, 3];
+    $('#m1-tabla').innerHTML =
+      '<tr><th>x</th>' + xs.map(x => '<th>' + x + '</th>').join('') + '</tr>' +
+      '<tr><th>a·x + b</th>' + xs.map(x => '<td>' + fmt(a * x + b) + '</td>').join('') + '</tr>' +
+      '<tr><th>¿= c?</th>' + xs.map(x => '<td>' + (z(a * x + b - c) ? '✔' : '·') + '</td>').join('') + '</tr>';
+  },
+  init() {
+    $('#m1-play').onclick = () => {
+      this.anim = true; this.px = -this.xr;
+      arranca('m1', () => {
+        this.px += 0.08 * getV('m1-speed');
+        if (this.px > this.xr) this.px = -this.xr;
+        this.update();
+      }, 40);
+    };
+    $('#m1-pause').onclick = () => para('m1');
+    $('#m1-reset').onclick = () => this.reiniciar();
+  },
+  velocidad() { },
+  reiniciar() { para('m1'); this.anim = false; reiniciarSliders(['m1-']); this.update(); }
+};
+RETOS.m1 = () => {
+  const d = MODS.m1.datos(), s = Mate.lineal(d.a, d.b, d.c);
+  if (s.tipo === 'unica' && casi(s.x, 4)) return { ok: true, msg: '🎉 ¡Excelente! Con ' + ecuacion1(d.a, d.b, d.c) + ' la solución es x = 4.' };
+  const act = s.tipo === 'unica' ? 'Ahora x = ' + fmt(s.x) + '.' : 'Ahora la ecuación no tiene una única solución.';
+  return { ok: false, msg: act + ' Pista: elige a = 2 y b = 3; luego c debe ser a·4 + b = 11.' };
+};
+
+/* ===== MÓDULO 2: sistemas 2×2 ===== */
+MODS.m2 = {
+  dir: 1,
+  datos() { return ['a1', 'b1', 'c1', 'a2', 'b2', 'c2'].map(k => getV('m2-' + k)); },
+  update() {
+    const k = this.datos();
+    const [a1, b1, c1, a2, b2, c2] = k;
+    const s = Mate.sistema(a1, b1, c1, a2, b2, c2);
+    dibujaSistema($('#m2-canvas'), k);
+    let h = '<div>(1) <b>' + ecuacion2(a1, b1, c1) + '</b></div><div>(2) <b>' + ecuacion2(a2, b2, c2) + '</b></div>';
+    if (s.tipo === 'unica') {
+      h += '<div>Tipo: <span class="badge ok">Una solución</span></div><div>x = <span class="big">' + fmt(s.x) + '</span> &nbsp; y = <span class="big">' + fmt(s.y) + '</span></div>';
+    } else if (s.tipo === 'infinitas') {
+      h += '<div>Tipo: <span class="badge warn">Infinitas soluciones</span> (rectas coincidentes)</div>';
+    } else {
+      h += '<div>Tipo: <span class="badge err">Sin solución</span> (rectas paralelas distintas)</div>';
+    }
+    $('#m2-res').innerHTML = h;
+    const dx = c1 * b2 - c2 * b1, dy = a1 * c2 - a2 * c1;
+    let t = '<tr><th>Paso</th><th>Cálculo</th></tr>' +
+      '<tr><td>Δ (determinante)</td><td>a₁b₂ − a₂b₁ = ' + pa(a1) + '·' + pa(b2) + ' − ' + pa(a2) + '·' + pa(b1) + ' = <b>' + fmt(s.det !== undefined ? s.det : a1 * b2 - a2 * b1) + '</b></td></tr>';
+    if (s.tipo === 'unica') {
+      t += '<tr><td>x</td><td>(c₁b₂ − c₂b₁)/Δ = ' + fmt(dx) + ' / ' + fmt(s.det) + ' = <b>' + fmt(s.x) + '</b></td></tr>' +
+        '<tr><td>y</td><td>(a₁c₂ − a₂c₁)/Δ = ' + fmt(dy) + ' / ' + fmt(s.det) + ' = <b>' + fmt(s.y) + '</b></td></tr>' +
+        '<tr><td>Comprobación</td><td>(1): ' + fmt(a1 * s.x + b1 * s.y) + ' ✔ &nbsp; (2): ' + fmt(a2 * s.x + b2 * s.y) + ' ✔</td></tr>';
+    } else {
+      t += '<tr><td>Interpretación</td><td>Δ = 0: las rectas tienen la misma pendiente. ' +
+        (s.tipo === 'infinitas' ? 'Además coinciden: infinitas soluciones.' : 'Pero no coinciden: no se cruzan nunca.') + '</td></tr>';
+    }
+    $('#m2-pasos').innerHTML = t;
+  },
+  init() {
+    $('#m2-play').onclick = () => {
+      arranca('m2', () => {
+        let v = getV('m2-c2') + this.dir;
+        if (v >= 20) { v = 20; this.dir = -1; }
+        if (v <= -20) { v = -20; this.dir = 1; }
+        setV('m2-c2', v); this.update();
+      }, Math.round(700 / getV('m2-speed')));
+    };
+    $('#m2-pause').onclick = () => para('m2');
+    $('#m2-reset').onclick = () => this.reiniciar();
+  },
+  velocidad() { if (Timers.m2) $('#m2-play').onclick(); },
+  reiniciar() { para('m2'); reiniciarSliders(['m2-']); this.update(); }
+};
+RETOS.m2 = () => {
+  const k = MODS.m2.datos(), s = Mate.sistema(k[0], k[1], k[2], k[3], k[4], k[5]);
+  if (s.tipo === 'unica' && casi(s.x, 2) && casi(s.y, 1)) return { ok: true, msg: '🎉 ¡Muy bien! El sistema tiene solución x = 2, y = 1.' };
+  const act = s.tipo === 'unica' ? 'Ahora la solución es (' + fmt(s.x) + '; ' + fmt(s.y) + ').' : 'Ahora el sistema no tiene una única solución.';
+  return { ok: false, msg: act + ' Pista: prueba x + y = 3 y x − y = 1 (a₁=1, b₁=1, c₁=3, a₂=1, b₂=−1, c₂=1).' };
+};
+
+/* ===== MÓDULO 3: matrices ===== */
+const defMat = n => n === 2
+  ? { A: [[1, 2], [3, 4]], B: [[5, 6], [7, 8]] }
+  : { A: [[1, 2, 3], [4, 5, 6], [7, 8, 10]], B: [[1, 0, 2], [0, 1, 3], [4, 0, 1]] };
+const AVION0 = [[1, 1, 0, 0], [0, 1, 1, 0], [1, 0, 0, 1], [0, 0, 1, 1], [1, 1, 1, 0], [0, 0, 0, 1]];
+
+MODS.m3 = {
+  n: 2, A: null, B: null, R: null, pos: -1,
+  choco: { r: 3, c: 4, comidas: new Set() },
+  avion: AVION0.map(f => f.slice()),
+  op() { return $('#m3-op').value; },
+  k() { const v = parseNum($('#m3-k').value); return isNaN(v) ? 0 : v; },
+  cargarDefecto() { const d = defMat(this.n); this.A = d.A; this.B = d.B; },
+  tablaInputs(nm) {
+    const M = this[nm];
+    $('#m3-' + nm).innerHTML = '<table class="mx">' + M.map((f, i) => '<tr>' + f.map((v, j) =>
+      '<td data-i="' + i + '" data-j="' + j + '"><input type="number" step="any" data-m="' + nm + '" data-i="' + i + '" data-j="' + j + '" value="' + v + '"></td>').join('') + '</tr>').join('') + '</table>';
+  },
+  tablaRes(R, n, mascara) {
+    return '<table class="mx">' + R.map((f, i) => '<tr>' + f.map((v, j) => {
+      const idx = i * f.length + j;
+      const oculto = mascara !== undefined && idx > mascara;
+      const ahora = mascara !== undefined && idx === mascara;
+      return '<td class="cell' + (ahora ? ' now' : '') + '">' + (oculto ? '?' : fmt(v)) + '</td>';
+    }).join('') + '</tr>').join('') + '</table>';
+  },
+  calcular() {
+    const A = this.A, B = this.B, k = this.k(), op = this.op(), n = this.n;
+    const e = (nm, i, j) => nm + sub(i + 1) + sub(j + 1);
+    let R, signo, usaB = false, ex = '';
+    switch (op) {
+      case 'suma':
+        R = Mate.suma(A, B); signo = '+'; usaB = true;
+        ex = 'Se suman los elementos que ocupan la misma posición:<br>c₁₁ = a₁₁ + b₁₁ = ' + pa(A[0][0]) + ' + ' + pa(B[0][0]) + ' = <b>' + fmt(R[0][0]) + '</b>'; break;
+      case 'resta':
+        R = Mate.resta(A, B); signo = '−'; usaB = true;
+        ex = 'Se restan los elementos que ocupan la misma posición:<br>c₁₁ = a₁₁ − b₁₁ = ' + pa(A[0][0]) + ' − ' + pa(B[0][0]) + ' = <b>' + fmt(R[0][0]) + '</b>'; break;
+      case 'escalar':
+        R = Mate.esc(k, A); signo = '× ' + fmt(k);
+        ex = 'Cada elemento de A se multiplica por k = ' + fmt(k) + ':<br>c₁₁ = k·a₁₁ = ' + pa(k) + '·' + pa(A[0][0]) + ' = <b>' + fmt(R[0][0]) + '</b>'; break;
+      case 'producto':
+        R = Mate.mul(A, B); signo = '×'; usaB = true;
+        ex = this.expProducto(this.pos >= 0 ? Math.floor(this.pos / n) : 0, this.pos >= 0 ? this.pos % n : 0, R); break;
+      case 'transpuesta':
+        R = Mate.trans(A); signo = 'ᵀ';
+        ex = 'Las filas de A pasan a ser columnas: por ejemplo a₁₂ = ' + pa(A[0][1]) + ' pasa a la posición (2, 1) de Aᵀ.'; break;
+      case 'det': {
+        const d = Mate.det(A); R = [[d]]; signo = 'det';
+        if (n === 2) ex = 'det(A) = a₁₁·a₂₂ − a₁₂·a₂₁ = ' + pa(A[0][0]) + '·' + pa(A[1][1]) + ' − ' + pa(A[0][1]) + '·' + pa(A[1][0]) + ' = <b>' + fmt(d) + '</b>';
+        else {
+          const m = (r1, c1, r2, c2) => A[r1][c1] * A[r2][c2] - A[r1][c2] * A[r2][c1];
+          ex = 'Desarrollo por la primera fila:<br>det(A) = a₁₁(a₂₂a₃₃ − a₂₃a₃₂) − a₁₂(a₂₁a₃₃ − a₂₃a₃₁) + a₁₃(a₂₁a₃₂ − a₂₂a₃₁)<br>= ' +
+            pa(A[0][0]) + '·' + pa(A[1][1] * A[2][2] - A[1][2] * A[2][1]) + ' − ' + pa(A[0][1]) + '·' + pa(A[1][0] * A[2][2] - A[1][2] * A[2][0]) +
+            ' + ' + pa(A[0][2]) + '·' + pa(A[1][0] * A[2][1] - A[1][1] * A[2][0]) + ' = <b>' + fmt(d) + '</b>';
+        }
+        break;
+      }
+    }
+    this.R = R;
+    return { R, signo, usaB, ex };
+  },
+  expProducto(i, j, R) {
+    const n = this.n, A = this.A, B = this.B;
+    const sim = [], num = [];
+    for (let t = 0; t < n; t++) { sim.push('a' + sub(i + 1) + sub(t + 1) + '·b' + sub(t + 1) + sub(j + 1)); num.push(pa(A[i][t]) + '·' + pa(B[t][j])); }
+    return 'Elemento (' + (i + 1) + ', ' + (j + 1) + ') = fila ' + (i + 1) + ' de A · columna ' + (j + 1) + ' de B:<br>c' + sub(i + 1) + sub(j + 1) + ' = ' + sim.join(' + ') +
+      '<br>= ' + num.join(' + ') + ' = <b>' + fmt(R[i][j]) + '</b>';
+  },
+  update() {
+    const { R, signo, usaB, ex } = this.calcular();
+    const prod = this.op() === 'producto' && this.pos >= 0;
+    $('#m3-signo').textContent = signo;
+    $('#m3-Bwrap').style.display = usaB ? '' : 'none';
+    $('#m3-R').innerHTML = this.tablaRes(R, this.n, prod ? this.pos : undefined);
+    $('#m3-expl').innerHTML = ex;
+    $$('#m3-A td, #m3-B td').forEach(td => td.classList.remove('hl'));
+    if (prod) {
+      const i = Math.floor(this.pos / this.n), j = this.pos % this.n;
+      $$('#m3-A td[data-i="' + i + '"]').forEach(td => td.classList.add('hl'));
+      $$('#m3-B td[data-j="' + j + '"]').forEach(td => td.classList.add('hl'));
+    }
+    this.renderChoco();
+    this.renderAvion();
+  },
+  onInput(id) {
+    if (id && id.indexOf('m3-c') === 0) { this.choco.r = getV('m3-cr'); this.choco.c = getV('m3-cc'); this.choco.comidas = new Set(); this.renderChoco(); }
+  },
+  renderChoco() {
+    const { r, c, comidas } = this.choco;
+    const cont = $('#m3-choco');
+    cont.style.gridTemplateColumns = 'repeat(' + c + ',1fr)';
+    let h = '';
+    for (let i = 0; i < r; i++) for (let j = 0; j < c; j++) {
+      const id = i * c + j;
+      h += '<button class="choco-piece' + (comidas.has(id) ? ' eaten' : '') + '" data-id="' + id + '" aria-label="Pieza fila ' + (i + 1) + ' columna ' + (j + 1) + '"></button>';
+    }
+    cont.innerHTML = h;
+    const e = comidas.size, tot = r * c;
+    $('#m3-choco-info').innerHTML = 'Matriz de <b>' + r + ' × ' + c + '</b> (' + r + ' filas, ' + c + ' columnas) → total = ' + r + '·' + c + ' = <b>' + tot + '</b> piezas.<br>Te comiste <b>' + e + '</b> · quedan <b>' + (tot - e) + '</b>.';
+  },
+  renderAvion() {
+    const M = this.avion, letras = ['A', 'B', 'C', 'D'];
+    let h = '';
+    M.forEach((f, i) => {
+      h += '<div class="fila-avion"><span class="n">' + (i + 1) + '</span>';
+      f.forEach((v, j) => {
+        if (j === 2) h += '<span class="pasillo"></span>';
+        h += '<button class="asiento' + (v ? ' ocupado' : '') + '" data-i="' + i + '" data-j="' + j + '" aria-label="Asiento ' + (i + 1) + letras[j] + '">' + letras[j] + '</button>';
+      });
+      h += '</div>';
+    });
+    $('#m3-avion').innerHTML = h;
+    $('#m3-avion-matriz').innerHTML = '<table class="mx" style="margin:8px 0">' + M.map(f => '<tr>' + f.map(v => '<td class="cell">' + v + '</td>').join('') + '</tr>').join('') + '</table>';
+    const tot = M.reduce((s, f) => s + f.reduce((a, b) => a + b, 0), 0);
+    $('#m3-avion-info').innerHTML = 'Matriz de <b>6 × 4</b> = 24 asientos. Ocupados: <b>' + tot + '</b> (' + fmt(tot / 24 * 100, 0) + ' %).<br>Ocupados por fila: [' + M.map(f => f.reduce((a, b) => a + b, 0)).join(', ') + ']';
+  },
+  init() {
+    this.cargarDefecto(); this.tablaInputs('A'); this.tablaInputs('B');
+    $('#m3-zona').addEventListener('input', e => {
+      const t = e.target;
+      if (t.dataset && t.dataset.m) { const v = parseNum(t.value); this[t.dataset.m][+t.dataset.i][+t.dataset.j] = isNaN(v) ? 0 : v; this.update(); }
+    });
+    $('#m3-size').onchange = e => { para('m3'); this.pos = -1; this.n = +e.target.value; this.cargarDefecto(); this.tablaInputs('A'); this.tablaInputs('B'); this.update(); };
+    $('#m3-op').onchange = () => { para('m3'); this.pos = -1; this.update(); };
+    $('#m3-k').oninput = () => this.update();
+    $('#m3-rand').onclick = () => {
+      para('m3'); this.pos = -1;
+      const al = () => Math.floor(Math.random() * 19) - 9;
+      ['A', 'B'].forEach(nm => this[nm] = this[nm].map(f => f.map(al)));
+      this.tablaInputs('A'); this.tablaInputs('B'); this.update();
+    };
+    $('#m3-play').onclick = () => {
+      $('#m3-op').value = 'producto'; this.pos = 0; this.update();
+      arranca('m3', () => {
+        this.pos++;
+        if (this.pos >= this.n * this.n) { this.pos = -1; para('m3'); }
+        this.update();
+      }, 1300);
+    };
+    $('#m3-pause').onclick = () => para('m3');
+    $('#m3-reset').onclick = () => this.reiniciar();
+    $('#m3-choco').addEventListener('click', e => {
+      const b = e.target.closest('.choco-piece'); if (!b) return;
+      const id = +b.dataset.id, s = this.choco.comidas;
+      if (s.has(id)) s.delete(id); else s.add(id);
+      this.renderChoco();
+    });
+    $('#m3-choco-reset').onclick = () => { this.choco.comidas = new Set(); this.renderChoco(); };
+    $('#m3-avion').addEventListener('click', e => {
+      const b = e.target.closest('.asiento'); if (!b) return;
+      const i = +b.dataset.i, j = +b.dataset.j; this.avion[i][j] = this.avion[i][j] ? 0 : 1; this.renderAvion();
+    });
+    $('#m3-avion-azar').onclick = () => { this.avion = this.avion.map(f => f.map(() => Math.random() < 0.5 ? 1 : 0)); this.renderAvion(); };
+    $('#m3-avion-vaciar').onclick = () => { this.avion = this.avion.map(f => f.map(() => 0)); this.renderAvion(); };
+  },
+  reiniciar() {
+    para('m3'); this.pos = -1; this.n = 2; $('#m3-size').value = '2'; $('#m3-op').value = 'suma'; $('#m3-k').value = '2';
+    this.cargarDefecto(); this.tablaInputs('A'); this.tablaInputs('B');
+    reiniciarSliders(['m3-']); this.choco = { r: 3, c: 4, comidas: new Set() };
+    this.avion = AVION0.map(f => f.slice());
+    $('#m3-reto-in').value = ''; $('#reto-m3').className = 'fb';
+    this.update();
+  }
+};
+RETOS.m3 = () => {
+  const M = MODS.m3; M.calcular();
+  const esperado = M.R[0][0], dado = parseNum($('#m3-reto-in').value);
+  if (isNaN(dado)) return { ok: false, msg: 'Escribe tu respuesta (un número) y vuelve a comprobar.' };
+  if (casi(dado, esperado, 1e-6)) return { ok: true, msg: '🎉 ¡Correcto! El elemento (1, 1) del resultado es ' + fmt(esperado) + '.' };
+  return { ok: false, msg: 'No coincide. Revisa la explicación que aparece bajo las matrices: allí se muestra cómo se calcula el primer elemento.' };
+};
+
+/* ===== MÓDULO 4: vectores ===== */
+MODS.m4 = {
+  V: { ux: 3, uy: 2, vx: -2, vy: 4 },
+  u() { return [this.V.ux, this.V.uy]; },
+  v() { return [this.V.vx, this.V.vy]; },
+  leerSliders() { ['ux', 'uy', 'vx', 'vy'].forEach(k => this.V[k] = getV('m4-' + k)); },
+  onInput(id) {
+    if (id) { const k = id.replace('m4-', ''); if (k in this.V) this.V[k] = getV(id); }
+    this.update();
+  },
+  update() {
+    const u = this.u(), v = this.v(), k = getV('m4-k');
+    dibujaVectores($('#m4-canvas'), u, v);
+    const mu = Mate.mod(u), mv = Mate.mod(v), dot = Mate.punto(u, v), det = Mate.detV(u, v), ang = Mate.angulo(u, v);
+    const cosA = (mu > EPS && mv > EPS) ? dot / (mu * mv) : NaN;
+    const orto = !isNaN(cosA) && Math.abs(cosA) < 0.012;
+    const par = !z(mu) && !z(mv) && Math.abs(det) < 1e-6 * Math.max(1, mu * mv);
+    $('#m4-badge').innerHTML = orto ? '<span class="badge ok">✔ u ⊥ v: ¡son ortogonales! (u·v ≈ 0)</span>' :
+      par ? '<span class="badge warn">u ∥ v: son paralelos (det = 0)</span>' : '<span class="badge err">No son ortogonales</span>';
+    const c = (a, b) => '(' + fmt(a) + '; ' + fmt(b) + ')';
+    $('#m4-res').innerHTML =
+      '<tr><th>Operación</th><th>Resultado</th></tr>' +
+      '<tr><td>|u| = √(x² + y²)</td><td><b>' + fmt(mu) + '</b></td></tr>' +
+      '<tr><td>|v|</td><td><b>' + fmt(mv) + '</b></td></tr>' +
+      '<tr><td>u + v</td><td><b>' + c(u[0] + v[0], u[1] + v[1]) + '</b></td></tr>' +
+      '<tr><td>|u + v|</td><td><b>' + fmt(Mate.mod([u[0] + v[0], u[1] + v[1]])) + '</b></td></tr>' +
+      '<tr><td>u − v</td><td><b>' + c(u[0] - v[0], u[1] - v[1]) + '</b></td></tr>' +
+      '<tr><td>k · u (k = ' + fmt(k) + ')</td><td><b>' + c(k * u[0], k * u[1]) + '</b></td></tr>' +
+      '<tr><td>u · v = x₁x₂ + y₁y₂</td><td><b>' + fmt(dot) + '</b> (' + fmt(u[0]) + '·' + pa(v[0]) + ' + ' + fmt(u[1]) + '·' + pa(v[1]) + ')</td></tr>' +
+      '<tr><td>Ángulo entre u y v</td><td><b>' + (isNaN(ang) ? '—' : fmt(ang, 1) + '°') + '</b></td></tr>' +
+      '<tr><td>det[u v] = x₁y₂ − y₁x₂</td><td><b>' + fmt(det) + '</b> (área del paralelogramo = ' + fmt(Math.abs(det)) + ')</td></tr>';
+  },
+  init() {
+    this.leerSliders();
+    $('#m4-play').onclick = () => {
+      arranca('m4', () => {
+        const r = Mate.mod(this.v());
+        if (z(r)) { para('m4'); return; }
+        const th = Math.atan2(this.V.vy, this.V.vx) + 0.026 * getV('m4-speed');
+        this.V.vx = r * Math.cos(th); this.V.vy = r * Math.sin(th);
+        setV('m4-vx', this.V.vx, this.V.vx); setV('m4-vy', this.V.vy, this.V.vy);
+        this.update();
+      }, 40);
+    };
+    $('#m4-pause').onclick = () => para('m4');
+    $('#m4-reset').onclick = () => this.reiniciar();
+  },
+  velocidad() { },
+  reiniciar() { para('m4'); reiniciarSliders(['m4-']); this.leerSliders(); this.update(); }
+};
+RETOS.m4 = () => {
+  const M = MODS.m4, u = M.u(), v = M.v();
+  const mu = Mate.mod(u), mv = Mate.mod(v);
+  if (mu > EPS && mv > EPS && Math.abs(Mate.punto(u, v)) / (mu * mv) < 0.012) return { ok: true, msg: '🎉 ¡Genial! u · v = ' + fmt(Mate.punto(u, v)) + ': los vectores son ortogonales.' };
+  return { ok: false, msg: 'Ahora u · v = ' + fmt(Mate.punto(u, v)) + '. Pista: si u = (a, b), un vector ortogonal es v = (−b, a). Con u = (3, 2) prueba v = (−2, 3).' };
+};
+
+/* ===== APLICACIÓN A LA VIDA ===== */
+MODS.vida = {
+  S: [[10, 5], [8, 7], [12, 4]], p: [15, 20],
+  tienda() {
+    const n1 = getV('v-n1'), m1 = getV('v-m1'), n2 = getV('v-n2'), m2 = getV('v-m2'), p = getV('v-p'), q = getV('v-q');
+    const T1 = n1 * p + m1 * q, T2 = n2 * p + m2 * q;
+    const s = Mate.sistema(n1, m1, T1, n2, m2, T2);
+    let h = '<div>🧾 Recibo 1: ' + '🥖'.repeat(n1) + ' ' + '🧃'.repeat(m1) + ' → total <b>$' + T1 + '</b></div>' +
+      '<div>🧾 Recibo 2: ' + '🥖'.repeat(n2) + ' ' + '🧃'.repeat(m2) + ' → total <b>$' + T2 + '</b></div>' +
+      '<div>Sistema: ' + ecuacion2(n1, m1, T1, 'x', 'y') + ' &nbsp;|&nbsp; ' + ecuacion2(n2, m2, T2, 'x', 'y') + ' (x = pan, y = jugo)</div>' +
+      '<div>Δ = ' + n1 + '·' + m2 + ' − ' + n2 + '·' + m1 + ' = <b>' + (n1 * m2 - n2 * m1) + '</b></div>';
+    if (s.tipo === 'unica') h += '<div class="big">✔ Con estos recibos se descubre: pan = $' + fmt(s.x) + ', jugo = $' + fmt(s.y) + '</div>';
+    else h += '<div>❌ Con estos recibos <b>no</b> se pueden descubrir los precios: son proporcionales (Δ = 0) y el segundo no aporta información nueva. ¡Cambia las cantidades!</div>';
+    $('#v-tienda').innerHTML = h;
+  },
+  ventasInit() {
+    const dias = ['Lun', 'Mar', 'Mié'];
+    $('#v-ventas').innerHTML =
+      '<div class="matrix-wrap"><div class="mt">Ventas (día × producto 🥤 🍪)</div><table class="mx">' +
+      this.S.map((f, i) => '<tr>' + f.map((v, j) => '<td><input type="number" min="0" step="1" data-s="' + i + '-' + j + '" value="' + v + '"></td>').join('') + '</tr>').join('') + '</table></div>' +
+      '<span class="op-sign">×</span>' +
+      '<div class="matrix-wrap"><div class="mt">Precios ($)</div><table class="mx">' +
+      this.p.map((v, j) => '<tr><td><input type="number" min="0" step="1" data-p="' + j + '" value="' + v + '"></td></tr>').join('') + '</table></div>' +
+      '<span class="op-sign">=</span><div class="matrix-wrap"><div class="mt">Ingreso diario</div><div id="v-ventas-R"></div></div>';
+    this.dias = dias;
+  },
+  ventas() {
+    const P = this.p.map(v => [v]);
+    const R = Mate.mul(this.S, P);
+    $('#v-ventas-R').innerHTML = MODS.m3.tablaRes(R, 1);
+    let h = '';
+    R.forEach((f, i) => { h += '<div>' + this.dias[i] + ': ' + this.S[i][0] + '·$' + this.p[0] + ' + ' + this.S[i][1] + '·$' + this.p[1] + ' = <b>$' + fmt(f[0]) + '</b></div>'; });
+    h += '<div class="big">Ingreso de la semana: $' + fmt(R.reduce((s, f) => s + f[0], 0)) + '</div>';
+    $('#v-ventas-res').innerHTML = h;
+  },
+  nav() {
+    const e1 = getV('v-e1'), n1 = getV('v-n1b'), e2 = getV('v-e2'), n2 = getV('v-n2b');
+    const tx = e1 + e2, ty = n1 + n2;
+    const m = Math.max(Math.abs(e1), Math.abs(n1), Math.abs(tx), Math.abs(ty));
+    const P = crearPlano($('#v-canvas'), Math.max(10, Math.ceil(m) + 2), null);
+    if (P) {
+      P.grid();
+      P.flecha(0, 0, e1, n1, '#0E9AA7', 'tramo 1');
+      P.flecha(e1, n1, tx, ty, '#3FA9D6', 'tramo 2');
+      P.flecha(0, 0, tx, ty, '#111827', 'total', [8, 6]);
+      P.punto(0, 0, '#fff', 'inicio', 5);
+    }
+    const dist = Math.hypot(tx, ty);
+    let h = '<div>Tramo 1 = (' + fmt(e1) + '; ' + fmt(n1) + ') &nbsp; Tramo 2 = (' + fmt(e2) + '; ' + fmt(n2) + ')</div>' +
+      '<div>Desplazamiento total = <b>(' + fmt(tx) + '; ' + fmt(ty) + ')</b></div>';
+    if (z(dist)) h += '<div class="big">¡Volviste al punto de partida!</div>';
+    else {
+      let th = Math.atan2(ty, tx) * 180 / Math.PI; if (th < 0) th += 360;
+      const nombres = ['Este', 'Noreste', 'Norte', 'Noroeste', 'Oeste', 'Suroeste', 'Sur', 'Sureste'];
+      h += '<div>Distancia en línea recta = √(' + fmt(tx) + '² + ' + fmt(ty) + '²) = <span class="big">' + fmt(dist) + ' km</span></div>' +
+        '<div>Dirección: ' + fmt(th, 1) + '° desde el Este (≈ ' + nombres[Math.round(th / 45) % 8] + ')</div>' +
+        '<div>Recorriste ' + fmt(Mate.mod([e1, n1]) + Mate.mod([e2, n2])) + ' km caminando, pero quedaste a ' + fmt(dist) + ' km del inicio.</div>';
+    }
+    $('#v-nav-res').innerHTML = h;
+  },
+  update() { this.tienda(); this.ventas(); this.nav(); },
+  init() {
+    this.ventasInit();
+    $('#v-ventas').addEventListener('input', e => {
+      const t = e.target, v = parseNum(t.value), val = isNaN(v) ? 0 : v;
+      if (t.dataset.s) { const [i, j] = t.dataset.s.split('-').map(Number); this.S[i][j] = val; }
+      if (t.dataset.p !== undefined) this.p[+t.dataset.p] = val;
+      this.ventas();
+    });
+    $('#v-ventas-reset').onclick = () => { this.S = [[10, 5], [8, 7], [12, 4]]; this.p = [15, 20]; this.ventasInit(); this.ventas(); };
+    $('#v-nav-reset').onclick = () => { reiniciarSliders(['v-e1', 'v-n1b', 'v-e2', 'v-n2b']); this.nav(); };
+  },
+  reiniciar() { reiniciarSliders(['v-']); this.S = [[10, 5], [8, 7], [12, 4]]; this.p = [15, 20]; this.ventasInit(); this.update(); }
+};
+
+/* ---------- 5. EJERCICIOS ---------- */
+/* Para agregar un ejercicio, copia uno de los objetos y cambia sus datos.
+   campos: lista de casillas de respuesta. tipo 'num' (número) o 'sel' (lista).
+   respuesta: valor correcto de cada casilla. */
+const EJERCICIOS = [
+  { id: 1, nivel: 'basico', modulo: 'm1', titulo: 'Despejando la incógnita',
+    objetivo: 'Resolver una ecuación lineal con una incógnita.',
+    problema: 'Resuelve la ecuación <b>3x + 5 = 20</b>.',
+    pasos: ['Ve al Módulo 1.', 'Observa dónde se cruzan las rectas.', 'Calcula x = (c − b) / a con tus propios números.', 'Escribe el valor de x.'],
+    variables: 'En el Módulo 1 ajusta a = 3, b = 5 y c = 20.',
+    campos: [{ id: 'x', label: 'x =' }], respuesta: { x: 5 },
+    pista: 'Primero resta 5 en ambos lados y luego divide entre el coeficiente de x.',
+    explicacion: '3x + 5 = 20 → 3x = 20 − 5 = 15 → x = 15 / 3 = <b>5</b>. Comprobación: 3·5 + 5 = 20 ✔' },
+  { id: 2, nivel: 'basico', modulo: 'm2', titulo: 'Dos números misteriosos',
+    objetivo: 'Resolver un sistema 2×2 sencillo.',
+    problema: 'Dos números suman 10 y su diferencia es 2. Resuelve: <b>x + y = 10</b> y <b>x − y = 2</b>.',
+    pasos: ['Ve al Módulo 2.', 'Observa el punto donde se cruzan las dos rectas.', 'Verifica con una suma de ecuaciones.', 'Escribe x e y.'],
+    variables: 'Ajusta a₁=1, b₁=1, c₁=10, a₂=1, b₂=−1, c₂=2.',
+    campos: [{ id: 'x', label: 'x =' }, { id: 'y', label: 'y =' }], respuesta: { x: 6, y: 4 },
+    pista: 'Si sumas las dos ecuaciones, y desaparece: 2x = 12.',
+    explicacion: 'Sumando: (x + y) + (x − y) = 10 + 2 → 2x = 12 → x = 6. Entonces y = 10 − 6 = <b>4</b>. Comprobación: 6 − 4 = 2 ✔' },
+  { id: 3, nivel: 'basico', modulo: 'm3', titulo: 'Sumando matrices',
+    objetivo: 'Sumar matrices elemento a elemento.',
+    problema: 'Calcula <b>A + B</b> con A = [1 2; 3 4] y B = [5 6; 7 8]. Escribe cada elemento del resultado C.',
+    pasos: ['Ve al Módulo 3, tamaño 2×2, operación A + B.', 'Suma los elementos de la misma posición.', 'Completa la matriz C.'],
+    variables: 'Usa los valores que aparecen por defecto en el Módulo 3.',
+    campos: [{ id: 'c11', label: 'c₁₁' }, { id: 'c12', label: 'c₁₂' }, { id: 'c21', label: 'c₂₁' }, { id: 'c22', label: 'c₂₂' }],
+    respuesta: { c11: 6, c12: 8, c21: 10, c22: 12 },
+    pista: 'c₁₁ = 1 + 5. Cada elemento se obtiene sumando los que están en su misma fila y columna.',
+    explicacion: 'c₁₁ = 1+5 = 6; c₁₂ = 2+6 = 8; c₂₁ = 3+7 = 10; c₂₂ = 4+8 = <b>12</b>. C = [6 8; 10 12].' },
+  { id: 4, nivel: 'basico', modulo: 'm4', titulo: 'Longitud de un vector',
+    objetivo: 'Calcular el módulo de un vector.',
+    problema: 'Un vector es u = (3, 4). ¿Cuál es su módulo |u|?',
+    pasos: ['Ve al Módulo 4 y coloca u = (3, 4), v = (0, 0).', 'Aplica |u| = √(x² + y²).', 'Compara con la tabla de resultados.'],
+    variables: 'u<sub>x</sub> = 3 y u<sub>y</sub> = 4.',
+    campos: [{ id: 'm', label: '|u| =' }], respuesta: { m: 5 },
+    pista: 'Eleva cada coordenada al cuadrado, suma y saca la raíz cuadrada.',
+    explicacion: '|u| = √(3² + 4²) = √(9 + 16) = √25 = <b>5</b>.' },
+  { id: 5, nivel: 'intermedio', modulo: 'm1', titulo: 'El taxi',
+    objetivo: 'Plantear y resolver una ecuación a partir de un problema real.',
+    problema: 'Un taxi cobra $50 de banderazo más $20 por kilómetro. Si un pasajero pagó $230, ¿cuántos kilómetros recorrió?',
+    pasos: ['Define x = kilómetros recorridos.', 'Plantea 20x + 50 = 230.', 'Despeja x.'],
+    variables: 'Plantea la ecuación a mano. En el Módulo 1 puedes ver la versión reducida (dividida entre 10): a = 2, b = 5, c = 23.',
+    campos: [{ id: 'x', label: 'Kilómetros' }], respuesta: { x: 9 },
+    pista: 'La ecuación es 20x + 50 = 230. Resta 50 y divide entre 20.',
+    explicacion: '20x + 50 = 230 → 20x = 180 → x = <b>9 km</b>. Comprobación: 20·9 + 50 = 230 ✔' },
+  { id: 6, nivel: 'intermedio', modulo: 'm2', titulo: 'Sistema con determinante',
+    objetivo: 'Aplicar la regla de Cramer e interpretar el determinante.',
+    problema: 'Resuelve <b>2x + 3y = 12</b> y <b>4x − y = 10</b>. Indica también el determinante Δ del sistema.',
+    pasos: ['Ve al Módulo 2 y ajusta los coeficientes.', 'Lee el valor de Δ en la tabla de pasos.', 'Calcula x e y con Cramer y verifica.'],
+    variables: 'a₁=2, b₁=3, c₁=12, a₂=4, b₂=−1, c₂=10.',
+    campos: [{ id: 'd', label: 'Δ =' }, { id: 'x', label: 'x =' }, { id: 'y', label: 'y =' }], respuesta: { d: -14, x: 3, y: 2 },
+    pista: 'Δ = a₁b₂ − a₂b₁ = 2·(−1) − 4·3. Luego x = (c₁b₂ − c₂b₁)/Δ.',
+    explicacion: 'Δ = 2·(−1) − 4·3 = −14. x = (12·(−1) − 10·3)/(−14) = −42/−14 = 3. y = (2·10 − 4·12)/(−14) = −28/−14 = <b>2</b>. Comprobación: 2·3+3·2 = 12 ✔ y 4·3 − 2 = 10 ✔' },
+  { id: 7, nivel: 'intermedio', modulo: 'm3', titulo: 'Multiplicando matrices',
+    objetivo: 'Multiplicar dos matrices 2×2.',
+    problema: 'Calcula <b>A × B</b> con A = [1 2; 3 4] y B = [2 0; 1 3].',
+    pasos: ['Escribe A y B en el Módulo 3 y elige A × B.', 'Pulsa «Animar el producto» y observa fila × columna.', 'Completa la matriz resultado.'],
+    variables: 'A = [1 2; 3 4], B = [2 0; 1 3].',
+    campos: [{ id: 'c11', label: 'c₁₁' }, { id: 'c12', label: 'c₁₂' }, { id: 'c21', label: 'c₂₁' }, { id: 'c22', label: 'c₂₂' }],
+    respuesta: { c11: 4, c12: 6, c21: 10, c22: 12 },
+    pista: 'c₁₁ = (fila 1 de A)·(columna 1 de B) = 1·2 + 2·1.',
+    explicacion: 'c₁₁ = 1·2 + 2·1 = 4; c₁₂ = 1·0 + 2·3 = 6; c₂₁ = 3·2 + 4·1 = 10; c₂₂ = 3·0 + 4·3 = <b>12</b>.' },
+  { id: 8, nivel: 'avanzado', modulo: 'm4', titulo: 'Buscando la ortogonalidad',
+    objetivo: 'Usar el producto punto para encontrar un parámetro y analizar resultados.',
+    problema: 'Los vectores u = (k, 3) y v = (6, −2) deben ser ortogonales. Halla k y el ángulo que forman.',
+    pasos: ['Plantea u·v = 0.', 'Despeja k.', 'Comprueba en el Módulo 4 con u = (1, 3) y v = (6, −2): el ángulo y u·v se muestran en la tabla.', 'Indica el ángulo.'],
+    variables: 'u = (k, 3), v = (6, −2).',
+    campos: [{ id: 'k', label: 'k =' }, { id: 'ang', label: 'Ángulo (°)' }], respuesta: { k: 1, ang: 90 },
+    pista: 'u·v = 6k + 3·(−2). Iguálalo a 0.',
+    explicacion: 'u·v = 6k − 6 = 0 → k = <b>1</b>. Como el producto punto es 0, los vectores forman un ángulo de <b>90°</b>.' },
+  { id: 9, nivel: 'avanzado', modulo: 'm2', titulo: 'Pensamiento crítico: ¿tiene solución?',
+    objetivo: 'Analizar el determinante para clasificar un sistema.',
+    problema: 'Analiza el sistema <b>2x + 4y = 6</b> y <b>x + 2y = 7</b>. Calcula Δ y decide cuántas soluciones tiene.',
+    pasos: ['Ve al Módulo 2 y configura el sistema.', 'Observa las rectas y el valor de Δ.', 'Decide el tipo de solución.'],
+    variables: 'a₁=2, b₁=4, c₁=6, a₂=1, b₂=2, c₂=7.',
+    campos: [{ id: 'd', label: 'Δ =' }, { id: 't', label: 'Soluciones', tipo: 'sel', opciones: ['única', 'infinitas', 'ninguna'] }],
+    respuesta: { d: 0, t: 'ninguna' },
+    pista: 'Si Δ = 0, compara: ¿la segunda ecuación multiplicada por 2 coincide con la primera?',
+    explicacion: 'Δ = 2·2 − 1·4 = <b>0</b>. Multiplicando la segunda por 2: 2x + 4y = 14, que contradice 2x + 4y = 6. Son rectas paralelas distintas: <b>ninguna solución</b>.' },
+  { id: 10, nivel: 'avanzado', modulo: 'vida', titulo: 'Los precios de la papelería',
+    objetivo: 'Modelar una situación cotidiana con un sistema y resolverla.',
+    problema: 'En una papelería, 2 cuadernos y 3 lápices cuestan $160, y 1 cuaderno con 4 lápices cuesta $130. ¿Cuánto cuesta cada cuaderno (x) y cada lápiz (y)?',
+    pasos: ['Plantea: 2x + 3y = 160 y x + 4y = 130.', 'Calcula Δ y aplica Cramer (o sustitución).', 'Comprueba en ambas ecuaciones.'],
+    variables: 'Practica el mismo tipo de sistema con la tarjeta «La tienda» de Aplicación a la vida (con precios menores).',
+    campos: [{ id: 'x', label: 'Cuaderno $' }, { id: 'y', label: 'Lápiz $' }], respuesta: { x: 50, y: 20 },
+    pista: 'Δ = 2·4 − 1·3 = 5. x = (160·4 − 130·3)/Δ.',
+    explicacion: 'Δ = 5. x = (640 − 390)/5 = <b>50</b>; y = (2·130 − 1·160)/5 = <b>20</b>. Comprobación: 2·50 + 3·20 = 160 ✔ y 50 + 4·20 = 130 ✔' }
+];
+
+function checkEjercicio(ej, vals) {
+  const malos = [];
+  ej.campos.forEach(c => {
+    const esperado = ej.respuesta[c.id], dado = vals[c.id];
+    let ok;
+    if (c.tipo === 'sel') ok = dado === esperado;
+    else { const n = parseNum(dado === undefined ? '' : dado); ok = !isNaN(n) && casi(n, esperado, 1e-6); }
+    if (!ok) malos.push(c.id);
+  });
+  return { ok: malos.length === 0, malos };
+}
+
+const Ejercicios = {
+  hechos: new Set(),
+  nivel: 'todos',
+  render() {
+    const nombres = { basico: 'Básico', intermedio: 'Intermedio', avanzado: 'Avanzado' };
+    $('#ej-lista').innerHTML = EJERCICIOS.filter(e => this.nivel === 'todos' || e.nivel === this.nivel).map(e => {
+      const campos = e.campos.map(c => c.tipo === 'sel'
+        ? '<label>' + c.label + '<select id="ej' + e.id + '-' + c.id + '"><option value="">— elige —</option>' + c.opciones.map(o => '<option>' + o + '</option>').join('') + '</select></label>'
+        : '<label>' + c.label + '<input type="text" inputmode="decimal" id="ej' + e.id + '-' + c.id + '" autocomplete="off"></label>').join('');
+      return '<div class="card ej" id="ej' + e.id + '"><h3>Ejercicio ' + e.id + ' · ' + e.titulo + ' <span class="nivel ' + e.nivel + '">' + nombres[e.nivel] + '</span>' +
+        (this.hechos.has(e.id) ? ' <span class="badge ok">✔ Completado</span>' : '') + '</h3>' +
+        '<p><b>🎯 Objetivo:</b> ' + e.objetivo + '</p><p><b>Problema:</b> ' + e.problema + '</p>' +
+        '<b>Instrucciones:</b><ol>' + e.pasos.map(p => '<li>' + p + '</li>').join('') + '</ol>' +
+        '<p><b>🎛 Variables a modificar:</b> ' + e.variables + '</p>' +
+        '<div class="campos">' + campos + '</div>' +
+        '<button class="btn" data-ej-check="' + e.id + '">Comprobar</button>' +
+        '<button class="btn neu" data-ej-retry="' + e.id + '">↻ Intentar de nuevo</button>' +
+        '<button class="btn sec" data-ej-show="' + e.id + '">Ver procedimiento</button>' +
+        '<button class="btn sec" data-go="' + e.modulo + '">Abrir simulación</button>' +
+        '<div class="fb" id="ej' + e.id + '-fb"></div><div class="explica" id="ej' + e.id + '-exp"><b>Procedimiento correcto:</b><br>' + e.explicacion + '</div></div>';
+    }).join('');
+    this.progreso();
+  },
+  progreso() {
+    const n = this.hechos.size;
+    $('#ej-progreso-txt').textContent = 'Completados: ' + n + ' de ' + EJERCICIOS.length;
+    $('#ej-progreso').style.width = (n / EJERCICIOS.length * 100) + '%';
+  },
+  valores(e) { const v = {}; e.campos.forEach(c => { v[c.id] = $('#ej' + e.id + '-' + c.id).value; }); return v; },
+  comprobar(id) {
+    const e = EJERCICIOS.find(x => x.id === id), fb = $('#ej' + id + '-fb');
+    const vals = this.valores(e);
+    if (e.campos.some(c => String(vals[c.id]).trim() === '')) { mensaje(fb, 'info', 'Completa todas las casillas antes de comprobar.'); return; }
+    const r = checkEjercicio(e, vals);
+    e.campos.forEach(c => { const el = $('#ej' + id + '-' + c.id); el.classList.toggle('bad', r.malos.indexOf(c.id) >= 0); el.classList.toggle('good', r.malos.indexOf(c.id) < 0); });
+    if (r.ok) {
+      this.hechos.add(id); Almacen.guardar('dorey_ej', Array.from(this.hechos));
+      mensaje(fb, true, '✅ <b>¡Correcto!</b> Excelente trabajo. Mira el procedimiento para confirmar tu método.');
+      $('#ej' + id + '-exp').classList.add('show');
+      this.progreso();
+      const h3 = $('#ej' + id + ' h3'); if (h3 && h3.innerHTML.indexOf('Completado') < 0) h3.insertAdjacentHTML('beforeend', ' <span class="badge ok">✔ Completado</span>');
+    } else {
+      const lista = r.malos.map(m => e.campos.find(c => c.id === m).label).join(', ');
+      mensaje(fb, false, '❌ Revisa: <b>' + lista + '</b>. <br>💡 Pista: ' + e.pista + '<br>Puedes corregir y volver a comprobar, o pulsar «Ver procedimiento».');
+    }
+  },
+  reintentar(id) {
+    const e = EJERCICIOS.find(x => x.id === id);
+    e.campos.forEach(c => { const el = $('#ej' + id + '-' + c.id); el.value = ''; el.classList.remove('bad', 'good'); });
+    $('#ej' + id + '-fb').className = 'fb'; $('#ej' + id + '-exp').classList.remove('show');
+  },
+  init() {
+    this.hechos = new Set(Almacen.leer('dorey_ej', []));
+    this.render();
+    $('#ej-tabs').addEventListener('click', ev => {
+      const b = ev.target.closest('button[data-nivel]'); if (!b) return;
+      this.nivel = b.dataset.nivel;
+      $$('#ej-tabs button').forEach(x => x.classList.toggle('active', x === b));
+      this.render();
+    });
+    $('#ej-lista').addEventListener('click', ev => {
+      const t = ev.target.closest('button'); if (!t) return;
+      if (t.dataset.ejCheck) this.comprobar(+t.dataset.ejCheck);
+      if (t.dataset.ejRetry) this.reintentar(+t.dataset.ejRetry);
+      if (t.dataset.ejShow) $('#ej' + t.dataset.ejShow + '-exp').classList.add('show');
+    });
+  }
+};
+
+/* ---------- 6. EVALUACIÓN ---------- */
+/* tipo 'mc' = selección múltiple (correcta = índice); tipo 'num' = completar con un número */
+const EVALUACION = [
+  { tipo: 'mc', m: 'm1', etq: 'Selección múltiple', texto: '¿Cuál es la solución de 2x − 6 = 10?', opciones: ['x = 2', 'x = 8', 'x = 4', 'x = −8'], correcta: 1,
+    exp: '2x − 6 = 10 → 2x = 16 → x = 8.' },
+  { tipo: 'mc', m: 'm2', etq: 'Selección múltiple', texto: 'Dos rectas paralelas y distintas representan un sistema con…', opciones: ['una solución', 'infinitas soluciones', 'ninguna solución', 'dos soluciones'], correcta: 2,
+    exp: 'Las rectas paralelas distintas nunca se cruzan, por eso no hay solución (Δ = 0 y las ecuaciones se contradicen).' },
+  { tipo: 'mc', m: 'm3', etq: 'Selección múltiple', texto: 'Si A es una matriz 2 × 3 y B es 3 × 2, el producto A·B es una matriz de…', opciones: ['3 × 3', '2 × 2', '2 × 3', '3 × 2'], correcta: 1,
+    exp: 'El producto tiene tantas filas como A (2) y tantas columnas como B (2): resulta 2 × 2.' },
+  { tipo: 'mc', m: 'm4', etq: 'Selección múltiple', texto: 'Dos vectores son ortogonales cuando…', opciones: ['su suma es cero', 'su producto punto es cero', 'tienen el mismo módulo', 'su determinante es cero'], correcta: 1,
+    exp: 'u ⊥ v exactamente cuando u·v = 0. Si el determinante fuera cero serían paralelos.' },
+  { tipo: 'mc', m: 'm4', etq: 'Selección múltiple', texto: '¿Cuál es el módulo del vector (5, 12)?', opciones: ['17', '13', '7', '60'], correcta: 1,
+    exp: '|u| = √(5² + 12²) = √169 = 13.' },
+  { tipo: 'num', m: 'm2', etq: 'Completar', texto: 'En el sistema x + y = 7 y x − y = 1, el valor de x es ___', correcta: 4,
+    exp: 'Sumando: 2x = 8 → x = 4 (y = 3).' },
+  { tipo: 'num', m: 'm3', etq: 'Completar', texto: 'El determinante de la matriz [2 3; 1 4] es ___', correcta: 5,
+    exp: 'det = 2·4 − 3·1 = 8 − 3 = 5.' },
+  { tipo: 'num', m: 'm4', etq: 'Completar', texto: 'El producto punto (2, 1)·(3, 4) es ___', correcta: 10,
+    exp: '2·3 + 1·4 = 6 + 4 = 10.' },
+  { tipo: 'num', m: 'm2', etq: 'Interpretación de problema', texto: 'Una tienda vende 3 camisas y 2 gorras por $130; 1 camisa y 2 gorras cuestan $70. ¿Cuánto cuesta una camisa?', correcta: 30,
+    exp: 'Restando las ecuaciones (3c + 2g = 130) − (c + 2g = 70): 2c = 60 → c = 30. Entonces g = 20.' },
+  { tipo: 'num', m: 'm4', etq: 'Actividad práctica', texto: 'Abre el Módulo 4 con u = (6, 0) y v = (0, 8). ¿Cuál es el módulo del vector suma u + v?', correcta: 10,
+    exp: 'u + v = (6, 8) → |u + v| = √(36 + 64) = √100 = 10.' }
+];
+const NOMBRE_MOD = { m1: 'Módulo 1 · Ecuaciones lineales', m2: 'Módulo 2 · Sistemas de ecuaciones', m3: 'Módulo 3 · Matrices', m4: 'Módulo 4 · Vectores' };
+
+const Evaluacion = {
+  preguntas: [],
+  nueva() {
+    this.preguntas = EVALUACION.map(q => q.tipo === 'mc'
+      ? Object.assign({}, q, { opts: barajar(q.opciones.map((t, i) => ({ t, ok: i === q.correcta }))) }) : q);
+    this.render();
+    $('#eval-result').innerHTML = '';
+  },
+  render() {
+    $('#eval-form').innerHTML = this.preguntas.map((q, i) => {
+      let cuerpo;
+      if (q.tipo === 'mc') cuerpo = q.opts.map((o, k) => '<label class="op"><input type="radio" name="q' + i + '" value="' + k + '"> ' + o.t + '</label>').join('');
+      else cuerpo = '<input type="text" inputmode="decimal" id="q' + i + '" placeholder="Tu respuesta" style="width:150px" autocomplete="off">';
+      return '<div class="preg"><div class="q">' + (i + 1) + '. <span class="tag">' + q.etq + '</span> ' + q.texto + ' <small>(10 pts)</small></div>' + cuerpo + '</div>';
+    }).join('');
+  },
+  calificar() {
+    let puntos = 0; const items = [], falla = {};
+    this.preguntas.forEach((q, i) => {
+      let ok = false, dado = '(sin responder)', correcta;
+      if (q.tipo === 'mc') {
+        const sel = document.querySelector('input[name="q' + i + '"]:checked');
+        correcta = q.opts.find(o => o.ok).t;
+        if (sel) { const o = q.opts[+sel.value]; dado = o.t; ok = o.ok; }
+      } else {
+        correcta = fmt(q.correcta);
+        const v = parseNum($('#q' + i).value);
+        if (!isNaN(v)) { dado = fmt(v); ok = casi(v, q.correcta, 1e-6); }
+      }
+      if (ok) puntos += 10; else falla[q.m] = (falla[q.m] || 0) + 1;
+      items.push({ i, q, ok, dado, correcta });
+    });
+    const bien = items.filter(x => x.ok).length;
+    let msg = puntos >= 90 ? '🏆 ¡Excelente! Dominas el álgebra lineal básica.' : puntos >= 70 ? '👏 ¡Muy bien! Solo repasa algunos detalles.' : puntos >= 50 ? '🙂 Vas por buen camino; repasa los módulos indicados.' : '💪 Sigue practicando: vuelve a las simulaciones y a las prácticas.';
+    let h = '<div class="card accent"><div class="nota-final">' + puntos + ' / 100</div><p><b>' + msg + '</b></p>' +
+      '<p>Respuestas correctas: <b>' + bien + '</b> · Incorrectas: <b>' + (items.length - bien) + '</b></p>' +
+      '<div class="progress"><div style="width:' + puntos + '%"></div></div></div>';
+    h += '<div class="card"><h3>Resumen de respuestas</h3>' + items.map(x => x.ok
+      ? '<div class="res-item ok">✅ <b>' + (x.i + 1) + '.</b> ' + x.q.texto + '<br>Tu respuesta: <b>' + x.dado + '</b></div>'
+      : '<div class="res-item err">❌ <b>' + (x.i + 1) + '.</b> ' + x.q.texto + '<br>Tu respuesta: <b>' + x.dado + '</b> · Correcta: <b>' + x.correcta + '</b><br>📖 ' + x.q.exp + '</div>').join('') + '</div>';
+    const mods = Object.keys(falla);
+    h += '<div class="card"><h3>Recomendaciones para mejorar</h3>' + (mods.length
+      ? '<ul class="clean">' + mods.map(m => '<li>Repasa el <b>' + NOMBRE_MOD[m] + '</b> (' + falla[m] + ' error' + (falla[m] > 1 ? 'es' : '') + '). <button class="btn sec small" data-go="' + m + '">Ir al módulo</button></li>').join('') + '</ul><p>Luego resuelve de nuevo las <b>Prácticas de laboratorio</b> y pulsa «Nuevo intento».</p>'
+      : '<p>¡Sin errores! Para seguir avanzando, crea tus propios casos en «Crea tu propio experimento».</p>') + '</div>';
+    $('#eval-result').innerHTML = h;
+    $('#eval-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return { puntos, bien };
+  },
+  init() {
+    this.nueva();
+    $('#eval-calificar').onclick = () => this.calificar();
+    $('#eval-reintentar').onclick = () => { this.nueva(); window.scrollTo(0, 0); };
+  }
+};
+
+/* ---------- 7. EXPERIMENTOS PROPIOS ---------- */
+/* Para agregar un tema: añade un objeto aquí con params y calc(p). */
+const EXP_TEMAS = {
+  ecuacion: {
+    nombre: 'Ecuación lineal',
+    params: [{ k: 'a', l: 'a', v: 2 }, { k: 'b', l: 'b', v: 3 }, { k: 'c', l: 'c', v: 11 }],
+    calc(p) {
+      const s = Mate.lineal(p.a, p.b, p.c);
+      const texto = s.tipo === 'unica' ? 'x = ' + fmt(s.x) : s.tipo === 'infinitas' ? 'Infinitas soluciones' : 'Sin solución';
+      return { texto, valores: { x: s.tipo === 'unica' ? Math.round(s.x * 1e6) / 1e6 : s.tipo }, html: '<div>' + ecuacion1(p.a, p.b, p.c) + '</div><div class="big">' + texto + '</div>',
+        dibujar: cv => dibujaEcuacion(cv, p.a, p.b, p.c) };
+    }
+  },
+  sistema: {
+    nombre: 'Sistema 2×2',
+    params: [{ k: 'a1', l: 'a₁', v: 1 }, { k: 'b1', l: 'b₁', v: 1 }, { k: 'c1', l: 'c₁', v: 7 }, { k: 'a2', l: 'a₂', v: 2 }, { k: 'b2', l: 'b₂', v: 1 }, { k: 'c2', l: 'c₂', v: 11 }],
+    calc(p) {
+      const s = Mate.sistema(p.a1, p.b1, p.c1, p.a2, p.b2, p.c2);
+      const texto = s.tipo === 'unica' ? 'x = ' + fmt(s.x) + ', y = ' + fmt(s.y) : s.tipo === 'infinitas' ? 'Infinitas soluciones' : 'Sin solución';
+      return { texto, valores: { delta: Math.round((p.a1 * p.b2 - p.a2 * p.b1) * 1e6) / 1e6, x: s.tipo === 'unica' ? Math.round(s.x * 1e6) / 1e6 : '—', y: s.tipo === 'unica' ? Math.round(s.y * 1e6) / 1e6 : '—' },
+        html: '<div>(1) ' + ecuacion2(p.a1, p.b1, p.c1) + '</div><div>(2) ' + ecuacion2(p.a2, p.b2, p.c2) + '</div><div class="big">' + texto + '</div>',
+        dibujar: cv => dibujaSistema(cv, [p.a1, p.b1, p.c1, p.a2, p.b2, p.c2]) };
+    }
+  },
+  matrices: {
+    nombre: 'Matrices 2×2',
+    params: [{ k: 'op', l: 'Operación', tipo: 'sel', opciones: [['suma', 'A + B'], ['producto', 'A × B'], ['det', 'det(A)']], v: 'suma' },
+      { k: 'a11', l: 'A₁₁', v: 1 }, { k: 'a12', l: 'A₁₂', v: 2 }, { k: 'a21', l: 'A₂₁', v: 3 }, { k: 'a22', l: 'A₂₂', v: 4 },
+      { k: 'b11', l: 'B₁₁', v: 5 }, { k: 'b12', l: 'B₁₂', v: 6 }, { k: 'b21', l: 'B₂₁', v: 7 }, { k: 'b22', l: 'B₂₂', v: 8 }],
+    calc(p) {
+      const A = [[p.a11, p.a12], [p.a21, p.a22]], B = [[p.b11, p.b12], [p.b21, p.b22]];
+      let R, texto;
+      if (p.op === 'det') { const d = Mate.det(A); R = [[d]]; texto = 'det(A) = ' + fmt(d); }
+      else { R = p.op === 'suma' ? Mate.suma(A, B) : Mate.mul(A, B); texto = '[' + R.map(f => f.map(v => fmt(v)).join(' ')).join('; ') + ']'; }
+      return { texto, valores: { resultado: texto }, html: '<div>Operación: <b>' + (p.op === 'suma' ? 'A + B' : p.op === 'producto' ? 'A × B' : 'det(A)') + '</b></div>' + MODS.m3.tablaRes(R, 2) };
+    }
+  },
+  vectores: {
+    nombre: 'Vectores',
+    params: [{ k: 'ux', l: 'uₓ', v: 3 }, { k: 'uy', l: 'u_y', v: 2 }, { k: 'vx', l: 'vₓ', v: -2 }, { k: 'vy', l: 'v_y', v: 3 }],
+    calc(p) {
+      const u = [p.ux, p.uy], v = [p.vx, p.vy];
+      const dot = Mate.punto(u, v), ang = Mate.angulo(u, v);
+      const texto = '|u| = ' + fmt(Mate.mod(u)) + ', |v| = ' + fmt(Mate.mod(v)) + ', u·v = ' + fmt(dot) + (Math.abs(dot) < 1e-9 ? ' (¡ortogonales!)' : '');
+      const r6 = n => Math.round(n * 1e6) / 1e6;
+      return { texto, valores: { modU: r6(Mate.mod(u)), modV: r6(Mate.mod(v)), punto: r6(dot), angulo: isNaN(ang) ? '—' : r6(ang), det: r6(Mate.detV(u, v)) },
+        html: '<div>|u| = <b>' + fmt(Mate.mod(u)) + '</b> · |v| = <b>' + fmt(Mate.mod(v)) + '</b></div><div>u + v = (' + fmt(u[0] + v[0]) + '; ' + fmt(u[1] + v[1]) + ')</div><div>u·v = <b>' + fmt(dot) + '</b> · ángulo = ' + (isNaN(ang) ? '—' : fmt(ang, 1) + '°') + '</div><div>det[u v] = ' + fmt(Mate.detV(u, v)) + '</div>',
+        dibujar: cv => dibujaVectores(cv, u, v) };
+    }
+  }
+};
+
+const Exp = {
+  ultimo: null,
+  tema() { return $('#ex-tema').value; },
+  renderParams() {
+    const T = EXP_TEMAS[this.tema()];
+    $('#ex-params').innerHTML = '<div class="campos">' + T.params.map(p => p.tipo === 'sel'
+      ? '<label>' + p.l + '<select id="exp-' + p.k + '">' + p.opciones.map(o => '<option value="' + o[0] + '"' + (o[0] === p.v ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></label>'
+      : '<label>' + p.l + '<input type="text" inputmode="decimal" id="exp-' + p.k + '" value="' + p.v + '" style="width:80px"></label>').join('') + '</div>';
+    this.ultimo = null;
+    $('#ex-canvas').style.display = 'none';
+    $('#ex-res').innerHTML = 'Pulsa «Generar simulación» para ver el resultado.';
+    $('#ex-fb').className = 'fb';
+  },
+  leer() {
+    const T = EXP_TEMAS[this.tema()], p = {};
+    for (const q of T.params) {
+      const v = $('#exp-' + q.k).value;
+      if (q.tipo === 'sel') p[q.k] = v;
+      else { const n = parseNum(v); if (isNaN(n)) return null; p[q.k] = n; }
+    }
+    return p;
+  },
+  generar() {
+    const fb = $('#ex-fb'), p = this.leer();
+    if (!p) { mensaje(fb, false, 'Escribe solo números en todas las casillas.'); return; }
+    const T = EXP_TEMAS[this.tema()], r = T.calc(p);
+    this.ultimo = { tema: this.tema(), temaNombre: T.nombre, params: p, texto: r.texto, valores: r.valores, _r: r };
+    this.mostrar();
+    mensaje(fb, 'info', 'Simulación generada. Si te sirve, pulsa «Guardar experimento».');
+  },
+  mostrar() {
+    if (!this.ultimo) return;
+    const r = this.ultimo._r, cv = $('#ex-canvas');
+    $('#ex-res').innerHTML = r.html;
+    if (r.dibujar) { cv.style.display = 'block'; r.dibujar(cv); } else cv.style.display = 'none';
+  },
+  guardar() {
+    const fb = $('#ex-fb');
+    if (!this.ultimo) { mensaje(fb, false, 'Primero genera la simulación (y vuelve a generarla si cambiaste valores).'); return; }
+    const lista = Almacen.leer('dorey_exp', []);
+    const id = lista.length ? Math.max.apply(null, lista.map(x => x.id)) + 1 : 1;
+    const u = this.ultimo;
+    lista.push({ id, fecha: new Date().toLocaleString('es-DO'), tema: u.tema, temaNombre: u.temaNombre, params: u.params, texto: u.texto, valores: u.valores });
+    Almacen.guardar('dorey_exp', lista);
+    mensaje(fb, true, '💾 Experimento #' + id + ' guardado.');
+    this.tabla();
+  },
+  tabla() {
+    const lista = Almacen.leer('dorey_exp', []);
+    const ps = p => Object.keys(p).map(k => k + '=' + p[k]).join(', ');
+    $('#ex-tabla').innerHTML = '<tr><th>✔</th><th>#</th><th>Fecha</th><th>Tema</th><th>Parámetros</th><th>Resultado</th><th></th></tr>' +
+      (lista.length ? lista.map(e => '<tr><td><input type="checkbox" data-sel="' + e.id + '"></td><td>' + e.id + '</td><td>' + e.fecha + '</td><td>' + e.temaNombre + '</td><td>' + ps(e.params) + '</td><td>' + e.texto + '</td><td><button class="btn neu small" data-del="' + e.id + '">✖</button></td></tr>').join('')
+        : '<tr><td colspan="7">Aún no has guardado experimentos.</td></tr>');
+  },
+  comparar() {
+    const lista = Almacen.leer('dorey_exp', []);
+    const ids = $$('#ex-tabla input[data-sel]:checked').map(c => +c.dataset.sel);
+    const sel = lista.filter(e => ids.indexOf(e.id) >= 0);
+    const t = $('#ex-comp');
+    if (sel.length < 2) { t.innerHTML = '<tr><td>Marca al menos 2 experimentos de la tabla para compararlos.</td></tr>'; return; }
+    const claves = []; sel.forEach(e => Object.keys(e.valores).forEach(k => { if (claves.indexOf(k) < 0) claves.push(k); }));
+    const ps = p => Object.keys(p).map(k => k + '=' + p[k]).join(', ');
+    t.innerHTML = '<tr><th>Dato</th>' + sel.map(e => '<th>Experimento #' + e.id + '</th>').join('') + '</tr>' +
+      '<tr><td>Tema</td>' + sel.map(e => '<td>' + e.temaNombre + '</td>').join('') + '</tr>' +
+      '<tr><td>Parámetros</td>' + sel.map(e => '<td>' + ps(e.params) + '</td>').join('') + '</tr>' +
+      '<tr><td>Resultado</td>' + sel.map(e => '<td><b>' + e.texto + '</b></td>').join('') + '</tr>' +
+      claves.map(k => '<tr><td>' + k + '</td>' + sel.map(e => '<td>' + (e.valores[k] !== undefined ? String(e.valores[k]).replace('.', ',') : '—') + '</td>').join('') + '</tr>').join('');
+  },
+  csv() {
+    const lista = Almacen.leer('dorey_exp', []);
+    if (!lista.length) { mensaje($('#ex-fb'), false, 'No hay experimentos guardados para exportar.'); return; }
+    const q = s => '"' + String(s).replace(/"/g, '""') + '"';
+    const filas = ['id,fecha,tema,parametros,resultado,valores'].concat(lista.map(e => [e.id, q(e.fecha), q(e.temaNombre), q(JSON.stringify(e.params)), q(e.texto), q(JSON.stringify(e.valores))].join(',')));
+    descargar('experimentos_dorey.csv', '\ufeff' + filas.join('\n'), 'text/csv;charset=utf-8');
+  },
+  json() {
+    const lista = Almacen.leer('dorey_exp', []);
+    if (!lista.length) { mensaje($('#ex-fb'), false, 'No hay experimentos guardados para exportar.'); return; }
+    descargar('experimentos_dorey.json', JSON.stringify(lista, null, 2), 'application/json');
+  },
+  init() {
+    this.renderParams(); this.tabla();
+    $('#ex-tema').onchange = () => this.renderParams();
+    $('#ex-params').addEventListener('input', () => { this.ultimo = null; });
+    $('#ex-params').addEventListener('change', () => { this.ultimo = null; });
+    $('#ex-generar').onclick = () => this.generar();
+    $('#ex-guardar').onclick = () => this.guardar();
+    $('#ex-reset').onclick = () => this.renderParams();
+    $('#ex-comparar').onclick = () => this.comparar();
+    $('#ex-csv').onclick = () => this.csv();
+    $('#ex-json').onclick = () => this.json();
+    $('#ex-borrar').onclick = () => { if (confirm('¿Borrar todos los experimentos guardados?')) { Almacen.guardar('dorey_exp', []); this.tabla(); $('#ex-comp').innerHTML = ''; } };
+    $('#ex-tabla').addEventListener('click', e => {
+      const b = e.target.closest('button[data-del]'); if (!b) return;
+      Almacen.guardar('dorey_exp', Almacen.leer('dorey_exp', []).filter(x => x.id !== +b.dataset.del)); this.tabla();
+    });
+  },
+  update() { this.mostrar(); },
+  reiniciar() { this.renderParams(); }
+};
+MODS.experimento = Exp;
+
+/* ---------- 8. NAVEGACIÓN E INICIO ---------- */
+const VISTAS = ['inicio', 'm1', 'm2', 'm3', 'm4', 'vida', 'practicas', 'evaluacion', 'experimento', 'ayuda'];
+let vistaActual = 'inicio';
+
+function mostrar(id, cambiarHash) {
+  if (VISTAS.indexOf(id) < 0) id = 'inicio';
+  paraTodo();
+  vistaActual = id;
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === id));
+  $$('#nav button[data-go]').forEach(b => b.classList.toggle('active', b.dataset.go === id));
+  $('#nav').classList.remove('open');
+  if (cambiarHash !== false && location.hash !== '#' + id) { try { location.hash = id; } catch (e) { /* ignorar */ } }
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => { const M = MODS[id]; if (M && M.update) M.update(); });
+}
+
+function reiniciarTodo() {
+  paraTodo();
+  ['m1', 'm2', 'm3', 'm4', 'vida', 'experimento'].forEach(k => MODS[k].reiniciar());
+  $$('.fb[id^="reto-"]').forEach(f => f.className = 'fb');
+  const M = MODS[vistaActual]; if (M && M.update) M.update();
+}
+
+function init() {
+  // Datos del laboratorio
+  document.title = CONFIG.nombre + ' · ' + CONFIG.subtitulo;
+  $$('.lab-nombre').forEach(e => e.textContent = CONFIG.nombre);
+  $('#lab-subtitulo').textContent = CONFIG.subtitulo;
+  $('#creditos-creadores').textContent = CONFIG.creadores.join(', ');
+  $('#creditos-inst').textContent = CONFIG.institucion;
+  $('#pie-inst').textContent = CONFIG.institucion;
+  $('#pie-creadores').textContent = 'Creado por: ' + CONFIG.creadores.join(' · ');
+
+  construirSliders();
+  MODS.m1.init(); MODS.m2.init(); MODS.m3.init(); MODS.m4.init(); MODS.vida.init();
+  Ejercicios.init(); Evaluacion.init(); Exp.init();
+
+  // Eventos globales
+  document.addEventListener('input', e => {
+    const t = e.target;
+    if (t.matches && t.matches('input[type=range][data-mod]')) {
+      $('#' + t.id + '-out').textContent = fmt(Number(t.value));
+      const M = MODS[t.dataset.mod]; if (!M) return;
+      if (t.id.slice(-6) === '-speed') { if (M.velocidad) M.velocidad(); return; }
+      if (M.onInput) M.onInput(t.id); else M.update();
+    }
+  });
+  document.addEventListener('click', e => {
+    const go = e.target.closest('[data-go]');
+    if (go) { mostrar(go.dataset.go); return; }
+    const set = e.target.closest('[data-set]');
+    if (set) {
+      const M = MODS[set.dataset.mod];
+      set.dataset.set.split(';').filter(Boolean).forEach(par => {
+        const [id, val] = par.split('=');
+        setV(id, val);
+        if (M.onInput) M.onInput(id);
+      });
+      M.update();
+      return;
+    }
+    const reto = e.target.closest('[data-reto]');
+    if (reto) { const k = reto.dataset.reto, r = RETOS[k](); mensaje($('#reto-' + k), r.ok, r.msg); }
+  });
+  $('#menuBtn').onclick = () => $('#nav').classList.toggle('open');
+  $('#btn-reset-all').onclick = reiniciarTodo;
+  window.addEventListener('hashchange', () => { const id = location.hash.replace('#', ''); if (id !== vistaActual) mostrar(id, false); });
+  let tmr;
+  window.addEventListener('resize', () => { clearTimeout(tmr); tmr = setTimeout(() => { const M = MODS[vistaActual]; if (M && M.update) M.update(); }, 150); });
+
+  mostrar(location.hash.replace('#', '') || 'inicio', false);
+}
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { Mate, EJERCICIOS, EVALUACION, checkEjercicio, fmt, parseNum, ecuacion1, ecuacion2, init, MODS, Evaluacion, Ejercicios, Exp, EXP_TEMAS };
+}
+
+</script>
+</body>
+</html>
